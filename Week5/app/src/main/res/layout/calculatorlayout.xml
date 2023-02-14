@@ -229,10 +229,21 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_marginBottom="8dp"
-            android:layout_weight="2"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
             android:backgroundTint="#631c42"
             android:textSize="40dp"
             android:text="." />
+
+        <Button
+            android:id="@+id/btnMod"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="#631c42"
+            android:textSize="40dp"
+            android:text="%" />
 
     </LinearLayout>
 </LinearLayout>
