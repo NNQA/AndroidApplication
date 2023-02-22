@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         addNumberBtnClickEvent(btn8);
         addNumberBtnClickEvent(btn9);
 
-        addNumberBtnClickEvent(btnDot);
+//        addNumberBtnClickEvent(btnDot);
 
         addOpBtnClickEvent(btnPlus);
         addOpBtnClickEvent(btnMul);
@@ -76,15 +76,32 @@ public class MainActivity extends AppCompatActivity {
         btnBackspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 char test = temp.charAt(temp.length() - 1);
-                 if(Character.isDigit(test) == true ) {
-                     temp = temp.substring(0, temp.length() - 1);
-                     N = N.substring(0, N.length() - 1);
-                     caculatorScreen.setText(temp);
-                 }
+                if(temp.length() > 0 && N.length() > 0) {
+                    char test = temp.charAt(temp.length() - 1);
+                    if(Character.isDigit(test) == true ) {
+                        temp = temp.substring(0, temp.length() - 1);
+                        N = N.substring(0, N.length() - 1);
+                        caculatorScreen.setText(temp);
+                    }
+                }
             }
         });
 
+        btnDot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkOPEqua) {
+                    ResetALlFeature();
+                }
+                if(N == "") {
+                    temp += "0";
+                    N += "0";
+                }
+                temp += btnDot.getText().toString();
+                N += btnDot.getText().toString();
+                caculatorScreen.setText(temp);
+            }
+        });
     }
 
     private void addNumberBtnClickEvent(Button button){
