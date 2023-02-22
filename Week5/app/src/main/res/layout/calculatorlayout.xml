@@ -8,14 +8,15 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:background="#29263b"
         android:ems="10"
+        android:enabled="false"
+        android:gravity="right|center_vertical"
         android:inputType="textPersonName"
         android:paddingRight="10dp"
-        android:background="#29263b"
-        android:gravity="right|center_vertical"
+        android:text="0"
         android:textColor="#FFFFFF"
-        android:textSize="40dp"
-        android:text="0" />
+        android:textSize="40dp" />
 
     <LinearLayout
         android:orientation="horizontal"
