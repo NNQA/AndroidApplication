@@ -90,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
         btnDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkOPEqua) {
-                    ResetALlFeature();
-                    checkOPEqua = false;
-                }
+//                if (checkOPEqua) {
+//                    ResetALlFeature();
+//                    checkOPEqua = false;
+//                }
                 if(N == "") {
                     temp += "0";
                     N += "0";
@@ -109,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkOPEqua) {
-                    ResetALlFeature();
-                    checkOPEqua = false;
-                }
+//               if (checkOPEqua) {
+//                    ResetALlFeature();
+//                    checkOPEqua = false;
+//               }
                 temp += button.getText().toString();
                 N += button.getText().toString();
                 caculatorScreen.setText(temp);
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         temp = KQ;
                     }
                     caculatorScreen.setText(temp);
-                    checkOPEqua = false;
+                    //checkOPEqua = false;
                 }else{
                     if(N == "")
                     {
