@@ -40,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         Button btnDiv= findViewById(R.id.btnDiv);
         Button btnEqu = findViewById(R.id.btnEqual);
 
+        Button btnClear = findViewById(R.id.btnClear);
+        Button btnBackspace = findViewById(R.id.btnDel);
+
+        Button btnDot = findViewById(R.id.btnDot);
+
         addNumberBtnClickEvent(btn0);
         addNumberBtnClickEvent(btn1);
         addNumberBtnClickEvent(btn2);
@@ -51,11 +56,35 @@ public class MainActivity extends AppCompatActivity {
         addNumberBtnClickEvent(btn8);
         addNumberBtnClickEvent(btn9);
 
+        addNumberBtnClickEvent(btnDot);
+
         addOpBtnClickEvent(btnPlus);
         addOpBtnClickEvent(btnMul);
         addOpBtnClickEvent(btnMinus);
         addOpBtnClickEvent(btnDiv);
         addOpBtnClickEvent(btnEqu);
+
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ResetALlFeature();
+                checkOPEqua = false;
+                caculatorScreen.setText("0");
+            }
+        });
+
+        btnBackspace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 char test = temp.charAt(temp.length() - 1);
+                 if(Character.isDigit(test) == true ) {
+                     temp = temp.substring(0, temp.length() - 1);
+                     N = N.substring(0, N.length() - 1);
+                     caculatorScreen.setText(temp);
+                 }
+            }
+        });
+
     }
 
     private void addNumberBtnClickEvent(Button button){
@@ -79,19 +108,33 @@ public class MainActivity extends AppCompatActivity {
                 if(op != null){
                     //Thuc hien phep tinh
                     if (button.getText().toString().equals("=")) {
-                        Caculate();
-                        caculatorScreen.setText(KQ);
-                        op = button.getText().toString();
-                        ResetFeatureTemp();
-                        checkOPEqua = true;
-                        return;
+                        if(N != "") {
+                            Caculate();
+                            KQ = KQ.replaceAll("\\.?0*$", "");
+                            caculatorScreen.setText(KQ);
+//                            op = button.getText().toString();
+                            ResetFeatureTemp();
+                            checkOPEqua = true;
+//                            return;
+                        }
                     }
                     else {
-                        Caculate();
+                        if(N == "" && button.getText().toString().equals("=") == false) {
+                            temp = temp.substring(0, temp.length() - 1);
+                            temp += button.getText().toString();
+                            op =  button.getText().toString();
+                        } else {
+                            Caculate();
+                            KQ = KQ.replaceAll("\\.?0*$", "");
+                        }
                     }
                     N = "";
-                    op = button.getText().toString();
-                    temp = KQ + op;
+                    if(!button.getText().toString().equals("=")) {
+                        op = button.getText().toString();
+                        temp = KQ + op;
+                    } else {
+                        temp = KQ;
+                    }
                     caculatorScreen.setText(temp);
                     checkOPEqua = false;
                 }else{
@@ -101,50 +144,55 @@ public class MainActivity extends AppCompatActivity {
                     }else{
                         KQ = N;
                     }
-                    temp += button.getText().toString();
-                    op =  button.getText().toString();
-                    N="";
-                    caculatorScreen.setText(temp);
-                    checkOPEqua = false;
+                    if(!button.getText().toString().equals("=")) {
+                        temp += button.getText().toString();
+                        op =  button.getText().toString();
+                        N="";
+                        caculatorScreen.setText(temp);
+                        checkOPEqua = false;
+                    }
+
                 }
             }
         });
     }
     private void Caculate() {
         if(op.toString().equals("+")) {
-            Plus(KQ, N);
+            Plus();
         }
         if(op.toString().equals("-")) {
-            Sub(KQ,N);
+            Sub();
         }
         if(op.toString().equals("*")) {
-            Multip(KQ,N);
+            Multip();
         }
         if(op.toString().equals("/")) {
-            Divi(KQ,N);
+            Divi();
         }
     }
-    private void Plus(String a, String b) {
-        KQ = Integer.toString( Integer.parseInt(KQ) + Integer.parseInt(N));
+    private void Plus() {
+//        KQ = Integer.toString( Integer.parseInt(KQ) + Integer.parseInt(N));
+        KQ = Double.toString( Double.parseDouble(KQ) + Double.parseDouble(N));
     }
-    private void Sub(String a, String b) {
-        KQ = Integer.toString( Integer.parseInt(KQ) - Integer.parseInt(N));
+    private void Sub() {
+        KQ = Double.toString( Double.parseDouble(KQ) - Double.parseDouble(N));
     }
-    private void Multip(String a, String b) {
-        KQ = Integer.toString( Integer.parseInt(KQ) * Integer.parseInt(N));
+    private void Multip() {
+        KQ = Double.toString( Double.parseDouble(KQ) * Double.parseDouble(N));
     }
-    private void Divi(String a, String b) {
-        int checkN = Integer.parseInt(N);
+    private void Divi() {
+        Double checkN = Double.parseDouble(N);
         if(checkN*1 == 0) {
-            caculatorScreen.setText("Division cannot be performed");
+            caculatorScreen.setText("Math Error!");
             ResetALlFeature();
             return;
         }
         else {
-            int tempRe = Integer.parseInt(KQ) / Integer.parseInt(N);
-            KQ = Integer.toString(tempRe);
+            Double tempRe = Double.parseDouble(KQ) / Double.parseDouble(N);
+            KQ = Double.toString(tempRe);
         }
     }
+
     private void ResetALlFeature() {
         op = null;
         temp = "";
