@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (checkOPEqua) {
                     ResetALlFeature();
+                    checkOPEqua = false;
                 }
                 if(N == "") {
                     temp += "0";
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (checkOPEqua) {
                     ResetALlFeature();
+                    checkOPEqua = false;
                 }
                 temp += button.getText().toString();
                 N += button.getText().toString();
@@ -126,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
                     //Thuc hien phep tinh
                     if (button.getText().toString().equals("=")) {
                         if(N != "") {
-                            if(op.equals("/")) {
-                                Caculate();
+                            if(op.equals("/") && Double.parseDouble(N) == 0) {
+                                caculatorScreen.setText("Math Error!");
                                 return;
                             }
                             Caculate();
@@ -202,16 +204,8 @@ public class MainActivity extends AppCompatActivity {
         KQ = Double.toString( Double.parseDouble(KQ) * Double.parseDouble(N));
     }
     private void Divi() {
-        int checkN = Integer.parseInt(N);
-        if(checkN*1 == 0) {
-            caculatorScreen.setText("Math Error!");
-            ResetALlFeature();
-            return;
-        }
-        else {
-            Double tempRe = Double.parseDouble(KQ) / Double.parseDouble(N);
-            KQ = Double.toString(tempRe);
-        }
+        Double tempRe = Double.parseDouble(KQ) / Double.parseDouble(N);
+        KQ = Double.toString(tempRe);
     }
 
     private void ResetALlFeature() {
