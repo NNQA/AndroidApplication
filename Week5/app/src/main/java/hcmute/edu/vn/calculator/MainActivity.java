@@ -126,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
                     //Thuc hien phep tinh
                     if (button.getText().toString().equals("=")) {
                         if(N != "") {
+                            if(op.equals("/")) {
+                                Caculate();
+                                return;
+                            }
                             Caculate();
                             KQ = KQ.replaceAll("\\.?0*$", "");
                             caculatorScreen.setText(KQ);
@@ -198,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         KQ = Double.toString( Double.parseDouble(KQ) * Double.parseDouble(N));
     }
     private void Divi() {
-        Double checkN = Double.parseDouble(N);
+        int checkN = Integer.parseInt(N);
         if(checkN*1 == 0) {
             caculatorScreen.setText("Math Error!");
             ResetALlFeature();
