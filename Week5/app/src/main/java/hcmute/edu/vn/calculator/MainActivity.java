@@ -10,11 +10,11 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity {
 
     String N="";
-
     String KQ="";
     String op=null;
     String temp="";
     EditText caculatorScreen;
+    boolean checkOPEqua =  false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnMul= findViewById(R.id.btnMul);
         Button btnMinus= findViewById(R.id.btnMinus);
         Button btnDiv= findViewById(R.id.btnDiv);
+        Button btnEqu = findViewById(R.id.btnEqual);
 
         addNumberBtnClickEvent(btn0);
         addNumberBtnClickEvent(btn1);
@@ -54,12 +55,16 @@ public class MainActivity extends AppCompatActivity {
         addOpBtnClickEvent(btnMul);
         addOpBtnClickEvent(btnMinus);
         addOpBtnClickEvent(btnDiv);
+        addOpBtnClickEvent(btnEqu);
     }
 
     private void addNumberBtnClickEvent(Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (checkOPEqua) {
+                    ResetALlFeature();
+                }
                 temp += button.getText().toString();
                 N += button.getText().toString();
                 caculatorScreen.setText(temp);
@@ -72,9 +77,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(op != null){
-                    //Thuc hien phep tinh ()
-                    //Reset het giu lai kq
-                    //Gan op = nut moi bam
+                    //Thuc hien phep tinh
+                    if (button.getText().toString().equals("=")) {
+                        Caculate();
+                        caculatorScreen.setText(KQ);
+                        op = button.getText().toString();
+                        ResetFeatureTemp();
+                        checkOPEqua = true;
+                        return;
+                    }
+                    else {
+                        Caculate();
+                    }
+                    N = "";
+                    op = button.getText().toString();
+                    temp = KQ + op;
+                    caculatorScreen.setText(temp);
+                    checkOPEqua = false;
                 }else{
                     if(N == "")
                     {
@@ -86,8 +105,54 @@ public class MainActivity extends AppCompatActivity {
                     op =  button.getText().toString();
                     N="";
                     caculatorScreen.setText(temp);
+                    checkOPEqua = false;
                 }
             }
         });
+    }
+    private void Caculate() {
+        if(op.toString().equals("+")) {
+            Plus(KQ, N);
+        }
+        if(op.toString().equals("-")) {
+            Sub(KQ,N);
+        }
+        if(op.toString().equals("*")) {
+            Multip(KQ,N);
+        }
+        if(op.toString().equals("/")) {
+            Divi(KQ,N);
+        }
+    }
+    private void Plus(String a, String b) {
+        KQ = Integer.toString( Integer.parseInt(KQ) + Integer.parseInt(N));
+    }
+    private void Sub(String a, String b) {
+        KQ = Integer.toString( Integer.parseInt(KQ) - Integer.parseInt(N));
+    }
+    private void Multip(String a, String b) {
+        KQ = Integer.toString( Integer.parseInt(KQ) * Integer.parseInt(N));
+    }
+    private void Divi(String a, String b) {
+        int checkN = Integer.parseInt(N);
+        if(checkN*1 == 0) {
+            caculatorScreen.setText("Division cannot be performed");
+            ResetALlFeature();
+            return;
+        }
+        else {
+            int tempRe = Integer.parseInt(KQ) / Integer.parseInt(N);
+            KQ = Integer.toString(tempRe);
+        }
+    }
+    private void ResetALlFeature() {
+        op = null;
+        temp = "";
+        KQ = "";
+        N = "";
+    }
+    private void ResetFeatureTemp() {
+        temp = "";
+        N = "";
     }
 }
