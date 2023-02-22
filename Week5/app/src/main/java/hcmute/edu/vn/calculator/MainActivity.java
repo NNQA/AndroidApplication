@@ -94,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
 //                    ResetALlFeature();
 //                    checkOPEqua = false;
 //                }
+                if(temp.equals(KQ)) {
+                    ResetALlFeature();
+                }
                 if(N == "") {
                     temp += "0";
                     N += "0";
