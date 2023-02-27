@@ -112,10 +112,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//               if (checkOPEqua) {
-//                    ResetALlFeature();
-//                    checkOPEqua = false;
-//               }
+               if (checkOPEqua) {
+                    ResetALlFeature();
+                    checkOPEqua = false;
+               }
                 temp += button.getText().toString();
                 N += button.getText().toString();
                 caculatorScreen.setText(temp);
