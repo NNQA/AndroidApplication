@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 if(temp.equals(KQ)) {
                     ResetALlFeature();
                 }
-                if(N == "") {
+                if(N == "" && ((op == null && !caculatorScreen.getText().equals(""))||(op != null))) {
                     temp += "0";
                     N += "0";
                 }
