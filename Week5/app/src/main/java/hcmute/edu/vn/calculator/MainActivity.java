@@ -62,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
         addOpBtnClickEvent(btnMul);
         addOpBtnClickEvent(btnMinus);
         addOpBtnClickEvent(btnDiv);
-        addOpBtnClickEvent(btnEqu);
+
+        btnEqu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EqualBtnEvent();
+            }
+        });
 
         btnClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,20 +96,19 @@ public class MainActivity extends AppCompatActivity {
         btnDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (checkOPEqua) {
-//                    ResetALlFeature();
-//                    checkOPEqua = false;
-//                }
-                if(temp.equals(KQ)) {
+
+
+                if(N == "" ) {
                     ResetALlFeature();
-                }
-                if(N == "" && ((op == null && !caculatorScreen.getText().equals(""))||(op != null))) {
                     temp += "0";
                     N += "0";
                 }
-                temp += btnDot.getText().toString();
-                N += btnDot.getText().toString();
-                caculatorScreen.setText(temp);
+                if(!N.contains(".")){
+                    temp += btnDot.getText().toString();
+                    N += btnDot.getText().toString();
+                    caculatorScreen.setText(temp);
+                }
+
             }
         });
     }
@@ -112,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (checkOPEqua) {
-                    ResetALlFeature();
-                    checkOPEqua = false;
-               }
+//               if (checkOPEqua) {
+//                    ResetALlFeature();
+//                    checkOPEqua = false;
+//               }
                 temp += button.getText().toString();
                 N += button.getText().toString();
                 caculatorScreen.setText(temp);
@@ -129,55 +134,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(op != null){
                     //Thuc hien phep tinh
-                    if (button.getText().toString().equals("=")) {
-                        if(N != "") {
-                            if(op.equals("/") && Double.parseDouble(N) == 0) {
-                                caculatorScreen.setText("Math Error!");
-                                return;
-                            }
-                            Caculate();
-                            KQ = KQ.replaceAll("\\.?0*$", "");
-                            caculatorScreen.setText(KQ);
-//                            op = button.getText().toString();
-                            ResetFeatureTemp();
-                            checkOPEqua = true;
-//                            return;
-                        }
-                    }
-                    else {
-                        if(N == "" && button.getText().toString().equals("=") == false) {
-                            temp = temp.substring(0, temp.length() - 1);
-                            temp += button.getText().toString();
-                            op =  button.getText().toString();
-                        } else {
-                            Caculate();
-                            KQ = KQ.replaceAll("\\.?0*$", "");
-                        }
+                    if(N == "") {
+                        temp = temp.substring(0, temp.length() - 1);
+                        temp += button.getText().toString();
+                        op =  button.getText().toString();
+                    } else {
+                        Caculate();
+                        KQ = KQ.replaceAll("\\.?0*$", "");
                     }
                     N = "";
-                    if(!button.getText().toString().equals("=")) {
-                        op = button.getText().toString();
-                        temp = KQ + op;
-                    } else {
-                        temp = KQ;
-                    }
+                    op = button.getText().toString();
+                    temp = KQ + op;
                     caculatorScreen.setText(temp);
                     //checkOPEqua = false;
-                }else{
+                }
+                else{
                     if(N == "")
                     {
                         KQ = "0";
                     }else{
                         KQ = N;
                     }
-                    if(!button.getText().toString().equals("=")) {
-                        temp += button.getText().toString();
-                        op =  button.getText().toString();
-                        N="";
-                        caculatorScreen.setText(temp);
-                        checkOPEqua = false;
-                    }
 
+                    temp += button.getText().toString();
+                    op =  button.getText().toString();
+                    N="";
+                    caculatorScreen.setText(temp);
+                    checkOPEqua = false;
                 }
             }
         });
@@ -221,4 +204,20 @@ public class MainActivity extends AppCompatActivity {
         temp = "";
         N = "";
     }
+
+    private void EqualBtnEvent() {
+        if(N != "") {
+            if(op.equals("/") && Double.parseDouble(N) == 0) {
+                caculatorScreen.setText("Math Error!");
+                return;
+            }
+            Caculate();
+            KQ = KQ.replaceAll("\\.?0*$", "");
+            caculatorScreen.setText(KQ);
+            N="";
+            checkOPEqua = true;
+        }
+    }
 }
+
+
