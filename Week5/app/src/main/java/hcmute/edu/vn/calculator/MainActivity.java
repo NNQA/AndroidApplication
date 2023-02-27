@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(temp.length() > 0 && N.length() > 0) {
                     char test = temp.charAt(temp.length() - 1);
-                    if(Character.isDigit(test) == true ) {
+                    if(Character.isDigit(test) == true || test == '.') {
                         temp = temp.substring(0, temp.length() - 1);
                         N = N.substring(0, N.length() - 1);
                         caculatorScreen.setText(temp);
@@ -96,10 +96,11 @@ public class MainActivity extends AppCompatActivity {
         btnDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if(N == "" ) {
+                if(temp.equals(KQ)) {
                     ResetALlFeature();
+                    checkOPEqua = false;
+                }
+                if(N == "") {
                     temp += "0";
                     N += "0";
                 }
@@ -117,10 +118,11 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//               if (checkOPEqua) {
-//                    ResetALlFeature();
-//                    checkOPEqua = false;
-//               }
+               if (checkOPEqua && op == null) {
+                    ResetALlFeature();
+                    checkOPEqua = false;
+               }
+
                 temp += button.getText().toString();
                 N += button.getText().toString();
                 caculatorScreen.setText(temp);
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                         temp += button.getText().toString();
                         op =  button.getText().toString();
                     } else {
-                        Caculate();
+                        Calculate();
                         KQ = KQ.replaceAll("\\.?0*$", "");
                     }
                     N = "";
@@ -149,13 +151,12 @@ public class MainActivity extends AppCompatActivity {
                     //checkOPEqua = false;
                 }
                 else{
-                    if(N == "")
+                    if(N == "" && checkOPEqua == false)
                     {
                         KQ = "0";
-                    }else{
+                    }else if(checkOPEqua == false){
                         KQ = N;
                     }
-
                     temp += button.getText().toString();
                     op =  button.getText().toString();
                     N="";
@@ -165,33 +166,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void Caculate() {
-        if(op.toString().equals("+")) {
-            Plus();
+    private void Calculate() {
+        if(op.equals("+")) {
+            KQ = Double.toString( Double.parseDouble(KQ) + Double.parseDouble(N));
         }
-        if(op.toString().equals("-")) {
-            Sub();
+        if(op.equals("-")) {
+            KQ = Double.toString( Double.parseDouble(KQ) - Double.parseDouble(N));
         }
-        if(op.toString().equals("*")) {
-            Multip();
+        if(op.equals("*")) {
+            KQ = Double.toString( Double.parseDouble(KQ) * Double.parseDouble(N));
         }
-        if(op.toString().equals("/")) {
-            Divi();
+        if(op.equals("/")) {
+            Double tempRe = Double.parseDouble(KQ) / Double.parseDouble(N);
+            KQ = Double.toString(tempRe);
         }
-    }
-    private void Plus() {
-//        KQ = Integer.toString( Integer.parseInt(KQ) + Integer.parseInt(N));
-        KQ = Double.toString( Double.parseDouble(KQ) + Double.parseDouble(N));
-    }
-    private void Sub() {
-        KQ = Double.toString( Double.parseDouble(KQ) - Double.parseDouble(N));
-    }
-    private void Multip() {
-        KQ = Double.toString( Double.parseDouble(KQ) * Double.parseDouble(N));
-    }
-    private void Divi() {
-        Double tempRe = Double.parseDouble(KQ) / Double.parseDouble(N);
-        KQ = Double.toString(tempRe);
     }
 
     private void ResetALlFeature() {
@@ -206,17 +194,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void EqualBtnEvent() {
-        if(N != "") {
-            if(op.equals("/") && Double.parseDouble(N) == 0) {
-                caculatorScreen.setText("Math Error!");
-                return;
+        if(op != null) {
+            if(N != "") {
+                if(op.equals("/") && Double.parseDouble(N) == 0) {
+                    caculatorScreen.setText("Math Error!");
+                    ResetALlFeature();
+                    return;
+                }
+                Calculate();
+                KQ = KQ.replaceAll("\\.?0*$", "");
+                N = "";
+                temp = KQ;
+                caculatorScreen.setText(temp);
+                checkOPEqua = true;
+                op = null;
             }
-            Caculate();
-            KQ = KQ.replaceAll("\\.?0*$", "");
-            caculatorScreen.setText(KQ);
-            N="";
-            checkOPEqua = true;
         }
+
     }
 }
 
