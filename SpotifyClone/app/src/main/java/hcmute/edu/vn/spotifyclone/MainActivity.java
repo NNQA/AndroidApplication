@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,44 +21,18 @@ import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     SearchView searchView;
-
+    NavController navController;
+    NavHostFragment navHostFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setFragmentSearch();
-        setFragmentPlayList();
-
-    }
-
-    private void setFragmentPlayList() {
+        navHostFragment =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+        navController = navHostFragment.getNavController();
         BottomNavigationView menu = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        BottomNavigationItemView item = menu.findViewById(R.id.item_3);
-
-        item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.frameLayout, new PlayList(), null)
-                        .commit();
-            }
-        });
+        NavigationUI.setupWithNavController(menu,navController);
     }
 
-    private void setFragmentSearch() {
-        BottomNavigationView menu = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        BottomNavigationItemView item = menu.findViewById(R.id.item_2);
-
-        item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.frameLayout, new Search(), null)
-                        .commit();
-            }
-        });
-    }
 }
