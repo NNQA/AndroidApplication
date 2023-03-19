@@ -136,9 +136,8 @@
     <Button
         android:id="@+id/FbButton"
         style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="50dp"
         android:paddingVertical="15dp"
         android:text="Facebook"
         android:textColor="#d7d7d7"
@@ -146,13 +145,35 @@
         app:icon="@drawable/icon_facebook"
         app:iconTint="#ffffff"
         app:iconGravity="start"
-        app:iconPadding="15dp"
+        app:iconPadding="20dp"
         app:backgroundTint="#3b5799"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.778"
+        app:shapeAppearanceOverlay="@style/roundedButton" />
+
+    <Button
+        android:id="@+id/GgButton"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="15dp"
+        android:text="Google"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:backgroundTint="#F8F8FF"
+        app:iconTint="@null"
+        app:icon="@drawable/icon_google"
+        app:iconGravity="start"
+        app:iconPadding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904"
         app:shapeAppearanceOverlay="@style/roundedButton" />
 
     <TextView
