@@ -25,7 +25,11 @@
         <item name="cornerSize">25dp</item>
 
     </style>
+    <style name="roundediconPlayList" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
 
+    </style>
     <style name="Theme.SpotifyClone.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

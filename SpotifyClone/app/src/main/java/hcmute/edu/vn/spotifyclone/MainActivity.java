@@ -25,7 +25,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setFragmentSearch();
+        setFragmentPlayList();
 
+    }
+
+    private void setFragmentPlayList() {
+        BottomNavigationView menu = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationItemView item = menu.findViewById(R.id.item_3);
+
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .add(R.id.frameLayout, new PlayList(), null)
+                        .commit();
+            }
+        });
     }
 
     private void setFragmentSearch() {
