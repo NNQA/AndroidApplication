@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
         Home home_fragment = new Home();
 
+        Profile profile_fragment = new Profile();
+
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         fragmentManager.beginTransaction().replace(R.id.main_fragment,home_fragment).commit();
