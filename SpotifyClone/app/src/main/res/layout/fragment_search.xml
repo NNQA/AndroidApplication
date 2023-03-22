@@ -3,12 +3,209 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Search">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Search"
+    android:id="@+id/searchFrg"
+    android:background="@color/bg1">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/header_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:minHeight="100dp"
+        android:orientation="vertical"
+        android:padding="18dp">
 
+        <TextView
+            android:id="@+id/textSearch"
+            style="@style/whiteH2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"></TextView>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/SearchView"
+            android:layout_width="341dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/textSearch"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:hint="What do you wanna listen to?"
+            android:paddingLeft="10dp" />
+
+        <TextView
+            android:id="@+id/browall"
+            style="@style/whiteH2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/SearchView"
+            android:layout_marginTop="15dp"
+            android:text="@string/brow_all"></TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/browall"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="341dp"
+                android:layout_height="91dp"
+                android:layout_margin="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="146dp"
+                    android:textStyle="bold"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/box"
+                    android:backgroundTint="@color/boxSearchColor1"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="PostCard"></TextView>
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor5"
+                    android:layout_marginLeft="35dp"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="Live Event"></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="341dp"
+                android:layout_height="91dp"
+                android:layout_margin="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor7"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="Made For You"></TextView>
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor9"
+                    android:layout_marginLeft="35dp"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="VietNamese Music"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="341dp"
+                android:layout_height="91dp"
+                android:layout_margin="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor2"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="Post"></TextView>
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor4"
+                    android:layout_marginLeft="35dp"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="K-pop"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="341dp"
+                android:layout_height="91dp"
+                android:layout_margin="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor12"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="HipHop"></TextView>
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor11"
+                    android:layout_marginLeft="35dp"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="Discover"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="341dp"
+                android:layout_height="91dp"
+                android:layout_margin="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor8"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="Indie"></TextView>
+
+                <TextView
+                    style="@style/whiteTitleSearch"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="35dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor10"
+                    android:background="@drawable/box"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:text="Dance"></TextView>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="invisible"
+            android:id="@+id/recyclerviewtimkiem"
+            android:layout_width="match_parent"
+            android:layout_height="610dp"
+            android:layout_below="@+id/SearchView"
+            android:layout_marginTop="2dp"
+            android:background="@color/white" />
+    </RelativeLayout>
 </FrameLayout>
