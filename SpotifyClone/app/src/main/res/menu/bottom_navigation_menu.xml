@@ -8,11 +8,12 @@
 
         />
     <item
-        android:id="@+id/item_2"
+        android:id="@+id/search2"
         android:enabled="true"
         android:icon="@drawable/search_24px"
         android:title="Search"/>
     <item
+
         android:id="@+id/item_3"
         android:enabled="true"
         android:icon="@drawable/overview_key_24px"
@@ -21,5 +22,10 @@
         android:id="@+id/item_4"
         android:enabled="true"
         android:icon="@drawable/account_circle_24px"
+
+        android:id="@+id/playList"
+        android:enabled="true"
+        android:icon="@drawable/ic_android_green"
+
         android:title="Profile"/>
 </menu>
