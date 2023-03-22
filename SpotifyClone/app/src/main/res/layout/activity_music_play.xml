@@ -4,6 +4,154 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MusicPlay_Activity">
+    android:background="@drawable/gradient1"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/songTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Darkside"
+        android:textColor="#ffffff"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.08" />
+
+    <TextView
+        android:id="@+id/songDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Alan Walker, Au/Ra, Tomie Harket"
+        android:textColor="#b3b3b3"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.145" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/songImage"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/darkside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.422"
+        app:shapeAppearanceOverlay="@style/roundedImageView" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/songVolume"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="Volume"
+        android:valueFrom="0"
+        android:valueTo="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.778"
+        app:thumbColor="#ffffff"
+        app:trackColor="#b3b3b3" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="buttonPlay"
+        app:icon="@drawable/button_play"
+        app:iconGravity="end"
+        app:iconSize="80dp"
+        app:iconTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.949" />
+
+    <Button
+        android:id="@+id/btnPrevious"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="buttonPrevious"
+        app:icon="@drawable/button_previous"
+        app:iconGravity="start"
+        app:iconSize="60dp"
+        app:iconTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.096"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.936" />
+
+    <Button
+        android:id="@+id/btnNext"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="buttonNext"
+        app:icon="@drawable/button_next"
+        app:iconGravity="start"
+        app:iconSize="60dp"
+        app:iconTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.906"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.936" />
+
+    <Button
+        android:id="@+id/btnMinimize"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:contentDescription="buttonMinimize"
+        app:icon="@drawable/button_minimize"
+        app:iconSize="70dp"
+        app:iconTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.019" />
+
+    <Button
+        android:id="@+id/btnMore"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="buttonMore"
+        android:padding="0dp"
+        app:icon="@drawable/button_more"
+        app:iconGravity="end"
+        app:iconSize="30dp"
+        app:iconTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.091" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
