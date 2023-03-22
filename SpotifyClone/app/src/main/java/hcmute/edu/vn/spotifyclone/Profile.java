@@ -74,18 +74,8 @@ public class Profile extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_profile, container, false);
-        button = view.findViewById(R.id.buttonPlaylist);
+        // Inflate the layout for this fragment;
 
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                navController.navigate(R.id.profile);
-                Navigation.findNavController(view).navigate(R.id.action_profile_to_playList);
-            }
-        });
-        return view;
+        return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 }

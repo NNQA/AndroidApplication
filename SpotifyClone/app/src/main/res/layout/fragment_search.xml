@@ -25,10 +25,10 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/SearchView"
-            android:layout_width="315dp"
+            android:layout_width="341dp"
             android:layout_height="40dp"
             android:layout_below="@id/textSearch"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="18dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/white"
             android:hint="What do you wanna listen to?"
@@ -57,9 +57,11 @@
 
                 <TextView
                     style="@style/whiteTitleSearch"
-                    android:layout_width="150dp"
+                    android:layout_width="146dp"
+                    android:textStyle="bold"
                     android:layout_height="match_parent"
                     android:background="@drawable/box"
+                    android:backgroundTint="@color/boxSearchColor1"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp"
                     android:text="PostCard"></TextView>
@@ -68,9 +70,10 @@
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor5"
                     android:layout_marginLeft="35dp"
                     android:background="@drawable/box"
-                    android:backgroundTint="@color/purple_700"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp"
                     android:text="Live Event"></TextView>
@@ -85,6 +88,8 @@
                 <TextView
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor7"
                     android:layout_height="match_parent"
                     android:background="@drawable/box"
                     android:paddingLeft="12dp"
@@ -95,9 +100,10 @@
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor9"
                     android:layout_marginLeft="35dp"
                     android:background="@drawable/box"
-                    android:backgroundTint="@color/purple_700"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp"
                     android:text="VietNamese Music"></TextView>
@@ -111,6 +117,8 @@
                 <TextView
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor2"
                     android:layout_height="match_parent"
                     android:background="@drawable/box"
                     android:paddingLeft="12dp"
@@ -121,9 +129,10 @@
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor4"
                     android:layout_marginLeft="35dp"
                     android:background="@drawable/box"
-                    android:backgroundTint="@color/purple_700"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp"
                     android:text="K-pop"></TextView>
@@ -137,6 +146,8 @@
                 <TextView
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor12"
                     android:layout_height="match_parent"
                     android:background="@drawable/box"
                     android:paddingLeft="12dp"
@@ -147,9 +158,10 @@
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor11"
                     android:layout_marginLeft="35dp"
                     android:background="@drawable/box"
-                    android:backgroundTint="@color/purple_700"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp"
                     android:text="Discover"></TextView>
@@ -163,6 +175,8 @@
                 <TextView
                     style="@style/whiteTitleSearch"
                     android:layout_width="150dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor8"
                     android:layout_height="match_parent"
                     android:background="@drawable/box"
                     android:paddingLeft="12dp"
@@ -174,8 +188,9 @@
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="35dp"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/boxSearchColor10"
                     android:background="@drawable/box"
-                    android:backgroundTint="@color/purple_700"
                     android:paddingLeft="12dp"
                     android:paddingTop="12dp"
                     android:text="Dance"></TextView>

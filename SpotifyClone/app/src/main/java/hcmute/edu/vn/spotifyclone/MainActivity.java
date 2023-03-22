@@ -28,11 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navHostFragment =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.frameLayout);
-        navController = navHostFragment.getNavController();
-        BottomNavigationView menu = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        NavigationUI.setupWithNavController(menu,navController);
-    }
 
+    }
 }

@@ -10,5 +10,21 @@
     <color name="bg1">#121212</color>
     <color name="text">#FFFFFFFF</color>
     <color name="textSearch">#B3B3B3</color>
+    <color name="boxSearchColor1">#fb0a2a</color>
+    <color name="boxSearchColor2">#ffcc33</color>
+    <color name="boxSearchColor3">#ff0000</color>
+    <color name="boxSearchColor4">#fcd20b</color>
+    <color name="boxSearchColor5">#e47911</color>
+    <color name="boxSearchColor6">#C1FF00</color>
+    <color name="boxSearchColor7">#FF1F9F</color>
+    <color name="boxSearchColor8">#2BDE6A</color>
+    <color name="boxSearchColor9">#168D40</color>
+    <color name="boxSearchColor10">#82B91D</color>
+    <color name="boxSearchColor11">#B9541D</color>
+    <color name="boxSearchColor12">#1D82B9</color>
+
+
+
+
 
 </resources>
