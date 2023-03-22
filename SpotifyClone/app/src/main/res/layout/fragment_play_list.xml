@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".PlayList"
+    android:background="@color/bg1">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:id="@+id/grText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/namePlayList"
+                style="@style/whiteH2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Playlist #1" />
+
+            <TextView
+                android:id="@+id/nameUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NameUser"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iconPlay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/white"
+            android:src="@drawable/play"
+            android:layout_below="@+id/Text"
+            android:layout_alignParentEnd="true"/>
+        <ImageView
+            android:id="@+id/iconShuffle"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/shuffle_48px"
+            android:layout_below="@+id/Text"
+            android:layout_toLeftOf="@+id/iconPlay"
+            android:background="@color/white"/>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/icon3Dots"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/Text"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/dotsicon"
+            app:shapeAppearanceOverlay="@style/roundediconPlayList" />
+
+
+        <TextView
+            android:id="@+id/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/grText"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="7dp"
+            android:text="Play songs in your playlist"
+            android:textColor="@color/white"
+            android:textSize="18dp"></TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewtimkiem"
+            android:layout_width="match_parent"
+            android:layout_height="533dp"
+            android:layout_below="@+id/iconPlay"
+            android:layout_marginTop="49dp"
+            android:background="@color/white"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+</FrameLayout>

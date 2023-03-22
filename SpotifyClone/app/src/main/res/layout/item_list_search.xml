@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg1"
+    android:padding="6dp">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageSearch"
+        android:padding="3dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/headphone1"
+            />
+
+    <LinearLayout
+        android:id="@+id/grText"
+        android:layout_width="173dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="169dp"
+        android:layout_toRightOf="@+id/imageSearch"
+        android:gravity="left|center"
+        android:orientation="vertical"
+        android:paddingTop="3dp">
+
+        <TextView
+            android:id="@+id/titleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ten Bai Hat"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/desciption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ten nghe si"
+            android:textColor="@color/textSearch"
+            android:textSize="10dp"/>
+    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/dotsicon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="12dp"
+        ></androidx.appcompat.widget.AppCompatImageView>
+
+
+</RelativeLayout>
