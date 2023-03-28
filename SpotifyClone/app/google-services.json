@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "354094234656",
+    "project_id": "mobileappmusicplay",
+    "storage_bucket": "mobileappmusicplay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354094234656:android:f567b4e88d961a39b59045",
+        "android_client_info": {
+          "package_name": "hcmute.edu.vn.spotifyclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354094234656-hmrte1sv574qlsr0cu766e4nmj2amo68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw0k6FUhY5dB9tyMCGFK_36Y-uqHqGTUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354094234656-hmrte1sv574qlsr0cu766e4nmj2amo68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
