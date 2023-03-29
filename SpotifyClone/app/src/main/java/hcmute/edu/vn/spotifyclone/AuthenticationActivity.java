@@ -3,6 +3,8 @@ package hcmute.edu.vn.spotifyclone;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,6 +37,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         signIn = findViewById(R.id.SignInButton);
 
+
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,6 +48,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"You need to input all field",Toast.LENGTH_LONG).show();
                 }else{
+                    signIn.setEnabled(false);
                     signIn(email,password);
                 }
 
@@ -82,8 +86,11 @@ public class AuthenticationActivity extends AppCompatActivity {
 //                                    }
 //                                }
 //                            });
-                            System.out.println(user.getDisplayName());
-                            //updateUI(user);
+
+                            signIn.setEnabled(true);
+                            saveData("userName",user.getDisplayName());
+
+                            ChangeScreen();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithEmail:failure", task.getException());
@@ -93,5 +100,29 @@ public class AuthenticationActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void saveData(String key,String value){
+        SharedPreferences sharedPreferences = getSharedPreferences("myRef",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(key,value);
+        editor.apply();
+    }
+
+    private String getData(String key){
+        SharedPreferences sharedPreferences=getSharedPreferences("myRef",0);
+        if(sharedPreferences.contains(key)){
+            String data = sharedPreferences.getString(key,null);
+            return data;
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void ChangeScreen() {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
