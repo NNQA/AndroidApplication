@@ -3,10 +3,12 @@ package hcmute.edu.vn.spotifyclone;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,12 +16,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class AuthenticationActivity extends AppCompatActivity {
+
+    public Dialog dialog;
     private FirebaseAuth mAuth;
     public EditText tiEmailInput;
     public EditText tiPassword;
@@ -48,8 +53,9 @@ public class AuthenticationActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"You need to input all field",Toast.LENGTH_LONG).show();
                 }else{
-                    signIn.setEnabled(false);
+//                    signIn.setEnabled(false);
                     signIn(email,password);
+                    openDialog();
                 }
 
             }
@@ -77,6 +83,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "Login Success",
                                     Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
 //                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Nguyen Dep Giai").build();
 //                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
 //                                @Override
@@ -87,7 +94,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 //                                }
 //                            });
 
-                            signIn.setEnabled(true);
+//                            signIn.setEnabled(true);
                             saveData("userName",user.getDisplayName());
 
                             ChangeScreen();
@@ -96,6 +103,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                             Log.w("TAG", "signInWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                             //updateUI(null);
                         }
                     }
@@ -124,5 +132,19 @@ public class AuthenticationActivity extends AppCompatActivity {
     public void ChangeScreen() {
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
+    }
+
+    public void openDialog(){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.processing_dialog_layout, null);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setCancelable(false)
+                .setTitle("Processing...")
+                .setMessage("This may take some time, please wait for a while")
+                .setView(dialogView);
+
+        dialog = builder.create();
+        dialog.show();
     }
 }
