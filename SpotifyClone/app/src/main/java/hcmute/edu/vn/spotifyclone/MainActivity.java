@@ -29,6 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+import hcmute.edu.vn.spotifyclone.dataAccess.SongDAO;
+import hcmute.edu.vn.spotifyclone.model.Song;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public PlayList playlist_fragment = new PlayList();
     public MusicPlay musicPlay_fragment = new MusicPlay();
     public Search search_fragment = new Search();
+    private Song mySongVariable  = new Song();
 
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -50,7 +54,22 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        //createAccount("herobaonguyen@gmail.com","123456");
+
+        SongDAO songDAO = new SongDAO();
+
+
+        songDAO.getSong("3c3305e8-ba2c-49f2-bc63-3b9ad452f997", new SongDAO.SongCallback() {
+            @Override
+            public void onSongLoaded(Song song) {
+                // Assign the song data to a variable outside the getSong() method.
+                 mySongVariable  = song;
+            }
+            @Override
+            public void onSongLoadFailed(Exception e) {
+                // Handle the error here.
+                Log.d("Song load error", e.getMessage());
+            }
+        });
 
        db.collection("usersA").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
            @Override
@@ -94,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
         fragmentManager.beginTransaction().replace(R.id.main_fragment,home_fragment).commit();
 

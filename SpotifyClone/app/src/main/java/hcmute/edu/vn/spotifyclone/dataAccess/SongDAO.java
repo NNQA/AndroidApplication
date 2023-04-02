@@ -24,6 +24,11 @@ import hcmute.edu.vn.spotifyclone.model.Song;
 public class SongDAO {
 
     List<Song> listSong = new ArrayList<>();
+
+    public interface SongCallback {
+        void onSongLoaded(Song song);
+        void onSongLoadFailed(Exception e);
+    }
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     public void addSong(Song song) {
@@ -46,46 +51,31 @@ public class SongDAO {
     }
 
 
-//    public synchronized Song getSong(String songId) {
-//
-//        final Song[] songs = new Song[1];
-//
-//        database.collection("songs").document(songId).get()
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        if (documentSnapshot.exists()) {
-//                            // Nếu document tồn tại, chuyển đổi dữ liệu sang đối tượng Song.
-//                            songs[0] = documentSnapshot.toObject(Song.class);
-//                        } else {
-//                            Log.d("Not found", "Document does not exist");
-//                        }
-//                        synchronized (songs) {
-//                            songs.notify();
-//                        }
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d("failure", "Error getting document", e);
-//                        synchronized (songs) {
-//                            songs.notify();
-//                        }
-//                    }
-//                });
-//
-//        synchronized (songs) {
-//            try {
-//                songs.wait();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return songs[0];
-//    }
+    public void getSong(String songId, final SongCallback callback) {
 
 
 
+        database.collection("songs").document(songId).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            // Nếu document tồn tại, chuyển đổi dữ liệu sang đối tượng Song.
+                            Song song = documentSnapshot.toObject(Song.class);
+                            callback.onSongLoaded(song);
+                        } else {
+                            Log.d("Not found", "Document does not exist");
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("failure", "Error getting document", e);
+
+                    }
+                });
+    }
 
 
 
@@ -118,4 +108,5 @@ public class SongDAO {
                     Log.w("failure", "Error when delete document", e);
                 });
     }
+
 }
