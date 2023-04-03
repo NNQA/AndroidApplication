@@ -9,17 +9,19 @@ import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import java.util.UUID;
-
+import hcmute.edu.vn.spotifyclone.dataAccess.PlaylistDAO;
 import hcmute.edu.vn.spotifyclone.dataAccess.SongDAO;
-import hcmute.edu.vn.spotifyclone.model.Song;
+import hcmute.edu.vn.spotifyclone.model.Playlist;
 
 public class MusicPlay_Activity extends AppCompatActivity {
 
 //    Testing CRUD
     Button btnPlay;
 
-    SongDAO songDAO;
+    SongDAO     songDAO;
+    PlaylistDAO playlistDAO;
+
+
 
 //
 
@@ -29,6 +31,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_music_play);
 
         songDAO = new SongDAO();
+        playlistDAO = new PlaylistDAO();
 
         Button btnMore = findViewById(R.id.btnMore);
         PopupMenu popupMenu = new PopupMenu(this, btnMore);
@@ -53,14 +56,12 @@ public class MusicPlay_Activity extends AppCompatActivity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Song song = new Song("Trac Loi", "son tung", 123, 123, "ty");
-                songDAO.addSong(song);
+                Playlist playlist = new Playlist("", "ads", null,0);
+
+                playlistDAO.addPlaylist(playlist);
                 Toast.makeText(getApplicationContext(),"OK OK",Toast.LENGTH_LONG).show();
 
-//                Song song = new Song();
-//                song = songDAO.getSong("42c6c913-3ae0-4fb9-8c05-a8b5edea9de6");
-//                song.setSongName("fck uoi");
-//                songDAO.updateSong(song);
+
 
             }
         });

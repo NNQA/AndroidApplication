@@ -39,6 +39,9 @@ public class PlayList extends Fragment {
         // Required empty public constructor
     }
 
+    public PlayList(String s, String datSadNess, Object o, int i) {
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
