@@ -7,27 +7,16 @@ public class Song {
     public String songId;
     public String songName;
     public String singer;
-    public int image;
-    public int source;
+    public String image;
+    public String source;
     public String uploader;
 
-    public Song(){
+    public Song() {
 
     }
-    public Song(String songId, String songName, String singer) {
+
+    public Song(String songId, String songName, String singer, String image, String source, String uploader) {
         this.songId = songId;
-        this.songName = songName;
-        this.singer = singer;
-    }
-    public Song(String songName, String singer, int image, int source, String uploader) {
-        this.songName = songName;
-        this.singer = singer;
-        this.image = image;
-        this.source = source;
-        this.uploader = uploader;
-    }
-
-    public Song(String songId, String songName, String singer, int image, int source, String uploader) {
         this.songName = songName;
         this.singer = singer;
         this.image = image;
@@ -59,19 +48,19 @@ public class Song {
         this.singer = singer;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
-    public int getSource() {
+    public String getSource() {
         return source;
     }
 
-    public void setSource(int source) {
+    public void setSource(String source) {
         this.source = source;
     }
 

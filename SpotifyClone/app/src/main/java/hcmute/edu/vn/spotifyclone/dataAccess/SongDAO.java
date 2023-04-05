@@ -78,6 +78,23 @@ public class SongDAO {
     }
 
 
+    public Song getRealSong(String songId){
+        final Song[] thisSong = {new Song()};
+        getSong(songId, new SongDAO.SongCallback() {
+            @Override
+            public void onSongLoaded(Song song) {
+                // Assign the song data to a variable outside the getSong() method.
+                thisSong[0] = song;
+            }
+            @Override
+            public void onSongLoadFailed(Exception e) {
+                // Handle the error here.
+                Log.d("Song load error", e.getMessage());
+            }
+        });
+
+        return thisSong[0];
+    }
 
     public void updateSong(Song song) {
 
