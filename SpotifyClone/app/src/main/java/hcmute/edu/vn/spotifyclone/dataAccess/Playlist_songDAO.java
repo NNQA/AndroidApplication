@@ -11,12 +11,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import hcmute.edu.vn.spotifyclone.model.Song;
 
 public class Playlist_songDAO {
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
@@ -14,22 +15,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import hcmute.edu.vn.spotifyclone.dataAccess.SongDAO;
 import hcmute.edu.vn.spotifyclone.model.Song;
 
 public class MainActivity extends AppCompatActivity {
@@ -53,37 +46,13 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy gfgPolicy =
+                    new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(gfgPolicy);
+        }
         mAuth = FirebaseAuth.getInstance();
-
-        SongDAO songDAO = new SongDAO();
-
-
-        songDAO.getSong("3c3305e8-ba2c-49f2-bc63-3b9ad452f997", new SongDAO.SongCallback() {
-            @Override
-            public void onSongLoaded(Song song) {
-                // Assign the song data to a variable outside the getSong() method.
-                 mySongVariable  = song;
-            }
-            @Override
-            public void onSongLoadFailed(Exception e) {
-                // Handle the error here.
-                Log.d("Song load error", e.getMessage());
-            }
-        });
-
-       db.collection("usersA").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-           @Override
-           public void onComplete(@NonNull Task<QuerySnapshot> task) {
-               if(task.isSuccessful()){
-                   for(QueryDocumentSnapshot document : task.getResult()){
-                       Log.d("tag", document.getId() + " => " + document.getData());
-                       Log.d("tag", document.getId() + " => " + document.getData());
-                   }
-               }else{
-                   Log.w("TAG", "Error getting documents.", task.getException());
-               }
-           }
-       });
 
         BottomNavigationView bottomNavigationView = new BottomNavigationView(this);
 
