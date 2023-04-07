@@ -1,9 +1,10 @@
 package hcmute.edu.vn.spotifyclone.model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Song {
+public class Song implements Serializable {
     public String songId;
     public String songName;
     public String singer;

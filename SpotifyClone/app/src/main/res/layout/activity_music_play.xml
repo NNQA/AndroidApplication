@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/songTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="30dp"
         android:text="Darkside"
         android:textColor="#ffffff"
         android:textSize="25dp"
         android:textStyle="bold"
+        android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.054"
@@ -26,18 +26,19 @@
 
     <TextView
         android:id="@+id/songDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginHorizontal="30dp"
         android:text="Alan Walker, Au/Ra, Tomie Harket"
         android:textColor="#b3b3b3"
         android:textSize="16dp"
+        android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.145" />
+        app:layout_constraintVertical_bias="0.129" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/songImage"
@@ -55,7 +56,7 @@
 
     <com.google.android.material.slider.Slider
         android:id="@+id/songVolume"
-        android:layout_width="300dp"
+        android:layout_width="355dp"
         android:layout_height="wrap_content"
         android:contentDescription="Volume"
         android:valueFrom="0"
@@ -69,7 +70,7 @@
         app:thumbColor="#ffffff"
         app:trackColor="#b3b3b3" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPlay"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
@@ -77,7 +78,7 @@
         android:contentDescription="buttonPlay"
         app:icon="@drawable/button_play"
         app:iconGravity="end"
-        app:iconSize="80dp"
+        app:iconSize="65dp"
         app:iconTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +87,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.949" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPrevious"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
@@ -94,7 +95,7 @@
         android:contentDescription="buttonPrevious"
         app:icon="@drawable/button_previous"
         app:iconGravity="start"
-        app:iconSize="60dp"
+        app:iconSize="50dp"
         app:iconTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +104,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.936" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnNext"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
@@ -111,32 +112,32 @@
         android:contentDescription="buttonNext"
         app:icon="@drawable/button_next"
         app:iconGravity="start"
-        app:iconSize="60dp"
+        app:iconSize="50dp"
         app:iconTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.906"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.936" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMinimize"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:contentDescription="buttonMinimize"
         app:icon="@drawable/button_minimize"
-        app:iconSize="70dp"
+        app:iconSize="50dp"
         app:iconTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.019" />
+        app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMore"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="50dp"
