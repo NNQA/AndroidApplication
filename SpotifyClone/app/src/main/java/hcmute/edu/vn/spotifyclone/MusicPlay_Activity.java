@@ -32,7 +32,7 @@ import hcmute.edu.vn.spotifyclone.service.SongService;
 public class MusicPlay_Activity extends AppCompatActivity {
 
 //  Component
-    MaterialButton btnPlay, btnMore, btnNext, btnPrev;
+    MaterialButton btnPlay, btnMore, btnNext, btnPrev, btnMinimize;
     TextView songTitle, songDescription;
     ShapeableImageView songImg;
     Slider slider;
@@ -73,6 +73,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         btnPlay = findViewById(R.id.btnPlay);
         btnNext = findViewById(R.id.btnNext);
         btnPrev = findViewById(R.id.btnPrevious);
+        btnMinimize = findViewById(R.id.btnMinimize);
         songTitle = findViewById(R.id.songTitle);
         songDescription = findViewById(R.id.songDescription);
         songImg = findViewById(R.id.songImage);
@@ -111,6 +112,13 @@ public class MusicPlay_Activity extends AppCompatActivity {
                     startPlayMusic(mySongId);
                 }
 
+            }
+        });
+
+        btnMinimize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 
@@ -195,9 +203,17 @@ public class MusicPlay_Activity extends AppCompatActivity {
         super.onStart();
 
         // Get intent Start play music here, assign mySongId = songId get from Intent
-        mySongId = "bfda49ae-8ef7-4d67-8085-96f9bbfe244d";
+//        1q4TGECGjQliuz1q8K4f
+        mySongId = getIntent().getStringExtra("sondId");
+//        mySongId = "1q4TGECGjQliuz1q8K4f";
         startPlayMusic(mySongId);
         btnPrev.setEnabled(false);
         btnNext.setEnabled(false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

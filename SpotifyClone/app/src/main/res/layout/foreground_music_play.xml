@@ -11,12 +11,14 @@
 
 
     <ImageView
+        android:id="@+id/imgSong_fg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitEnd"
         android:src="@drawable/darkside"/>
 
     <FrameLayout
+        android:id="@+id/colorTheme_fg"
         android:background="@drawable/gradient2"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >

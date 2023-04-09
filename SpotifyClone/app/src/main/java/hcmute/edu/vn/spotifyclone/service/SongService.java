@@ -9,8 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -31,9 +34,10 @@ public class SongService extends Service {
     public static final int ACTION_NEXT = 4;
     public static final int ACTION_PREVIOUS = 5;
 
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
     private Song recentSong;
+    RemoteViews remoteViews;
 
     public SongService() {
     }
@@ -46,6 +50,7 @@ public class SongService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        remoteViews = new RemoteViews(getPackageName(), R.layout.foreground_music_play);
     }
 
     @Override
@@ -69,6 +74,13 @@ public class SongService extends Service {
     }
 
     public void runMusic(Song song){
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        mediaPlayer = new MediaPlayer();
 
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -132,9 +144,10 @@ public class SongService extends Service {
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.foreground_music_play);
+
         remoteViews.setTextViewText(R.id.tvTitleSong, song.getSongName());
         remoteViews.setTextViewText(R.id.tvSingerSong, song.getSinger());
+//        remoteViews.setImageViewUri(R.id.imgSong_fg, Uri.parse(song.getImage()));
 
         if(isPlaying == true) {
             remoteViews.setOnClickPendingIntent(R.id.btnPlay_fg, getPendingIntent(this, ACTION_PAUSE));
