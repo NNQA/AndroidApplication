@@ -18,8 +18,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import hcmute.edu.vn.spotifyclone.model.Song;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,7 +38,7 @@ public class Search extends Fragment {
     private RecyclerView recyclerView;
     private searchListAdapter searchListAdapter;
     SearchView searchView;
-
+    private final FirebaseFirestore database = FirebaseFirestore.getInstance();
     LinearLayoutManager linearLayout;
     View view;
     FragmentManager fragmentManager;
@@ -86,7 +94,7 @@ public class Search extends Fragment {
         linearLayout = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(linearLayout);
 
-        searchListAdapter = new searchListAdapter(getListUsers());
+        searchListAdapter = new searchListAdapter(this.getActivity(),getListSong());
         recyclerView.setAdapter(searchListAdapter);
 
         searchView = view.findViewById(R.id.SearchView);
@@ -105,21 +113,47 @@ public class Search extends Fragment {
             }
         });
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchListAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchListAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
 
         return view;
     }
 
-    private List<user> getListUsers() {
-        List<user> list = new ArrayList<>();
-        list.add(new user(R.drawable.headphone1,"hay trao cho anh","son tung"));
-        list.add(new user(R.drawable.headphone2,"em cua ngay hom qua","son tung"));
-        list.add(new user(R.drawable.headphone3,"anh sai roi","son tung"));
-        list.add(new user(R.drawable.headphone4,"chay ngay di","son tung"));
-        list.add(new user(R.drawable.headphone1,"con mua ngang qua","son tung"));
-        list.add(new user(R.drawable.headphone2,"con mua ngang qua 2","son tung"));
-        list.add(new user(R.drawable.headphone3,"con mua ngang qua 3","son tung"));
-        list.add(new user(R.drawable.headphone4,"co chac yeu la day","son tung"));
-        list.add(new user(R.drawable.headphone1,"chung ta cua hien tai","son tung"));
+    private List<Song> getListSong() {
+        List<Song> list = new ArrayList<>();
+        database.collection("songs")
+                        .get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        List<DocumentSnapshot>  snapshotList = queryDocumentSnapshots.getDocuments();
+                                        for (DocumentSnapshot documentSnapshot: snapshotList) {
+                                            Song songs = new Song(documentSnapshot.getString("songId"),
+                                                            documentSnapshot.getString("songName"),
+                                                            documentSnapshot.getString("singer"),
+                                                            documentSnapshot.getString("image"),
+                                                            documentSnapshot.getString("source"),
+                                                            documentSnapshot.getString("uploader"));
+                                            list.add(songs);
+                                        }
+                                    }
+                                });
+
+
+
+
         return list;
     }
 

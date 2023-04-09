@@ -78,7 +78,7 @@ public class PlayList extends Fragment {
         linearLayout = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(linearLayout);
 
-        searchListAdapter = new searchListAdapter(getListUsers());
+//        searchListAdapter = new searchListAdapter(getListUsers());
         recyclerView.setAdapter(searchListAdapter);
 
         return view;
