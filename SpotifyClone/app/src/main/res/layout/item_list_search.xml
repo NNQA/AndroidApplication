@@ -4,8 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg1"
-    android:padding="6dp">
-    <com.google.android.material.imageview.ShapeableImageView
+    android:padding="6dp"
+    android:id="@+id/itemShow">
+    <ImageView
         android:id="@+id/imageSearch"
         android:padding="3dp"
         android:layout_width="50dp"
