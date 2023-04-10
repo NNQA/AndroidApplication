@@ -21,15 +21,12 @@ import hcmute.edu.vn.spotifyclone.model.Song;
 
 public class Home extends Fragment {
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
-    private List<Song> songsList;
     RecyclerView recyclerView;
     CarouselSongAdapter adapter;
 
     public Home() {
 
     }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
