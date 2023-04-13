@@ -1,6 +1,7 @@
 package hcmute.edu.vn.spotifyclone;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -9,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +46,8 @@ public class MusicPlay_Activity extends AppCompatActivity {
     public String mySongId = "abc";
     public boolean isPlaying = true;
     public boolean isServiceRunning = true;
-    public int totalDuration;
+    public int totalDuration = 1;
+    public int currentProgress = 1;
 //
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -60,6 +64,21 @@ public class MusicPlay_Activity extends AppCompatActivity {
         }
     };
 
+    private BroadcastReceiver broadcastReceiver2 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if(bundle == null) {
+                return;
+            }
+
+            totalDuration = bundle.getInt("total_duration");
+            currentProgress = bundle.getInt("current_progress");
+
+            setProgressSong(currentProgress, totalDuration);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +87,12 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver, new IntentFilter("send_action_to_act"));
+<<<<<<< HEAD
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(broadcastReceiver2, new IntentFilter("send_in4_to_act"));
 
+=======
+>>>>>>> 51087da (Add signIn screen)
         btnMore = findViewById(R.id.btnMore);
         btnPlay = findViewById(R.id.btnPlay);
         btnNext = findViewById(R.id.btnNext);
@@ -101,7 +125,6 @@ public class MusicPlay_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isServiceRunning){
-                    Log.e("Mess", "is "+isPlaying);
                     if (isPlaying){
                         sendActToService(SongService.ACTION_PAUSE);
                     } else {
@@ -126,7 +149,6 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
 
     public void startPlayMusic(String mSongId){
-
         db.collection("songs").document(mSongId)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -135,6 +157,24 @@ public class MusicPlay_Activity extends AppCompatActivity {
                         Song song = documentSnapshot.toObject(Song.class);
                         setInformation(song);
                         startService(song);
+                        isServiceRunning = true;
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("failed", "error ");
+                    }
+                });
+    }
+
+    public void startWhenMusicIsPlaying(String mSongId){
+        db.collection("songs").document(mSongId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Song song = documentSnapshot.toObject(Song.class);
+                        setInformation(song);
                         isServiceRunning = true;
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -192,27 +232,50 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
         startService(intent);
     }
+
+    public void setProgressSong(int currentProgress, int totalDuration){
+        float a = currentProgress;
+        float b = totalDuration;
+        float percent = (a/b) *100;
+        slider.setValue(percent);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver2);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        // Get intent Start play music here, assign mySongId = songId get from Intent
-//        1q4TGECGjQliuz1q8K4f
-        mySongId = getIntent().getStringExtra("sondId");
 //        mySongId = "1q4TGECGjQliuz1q8K4f";
-        startPlayMusic(mySongId);
-        btnPrev.setEnabled(false);
-        btnNext.setEnabled(false);
+        mySongId = getIntent().getStringExtra("sondId");
+        if(mySongId != null) {
+            startPlayMusic(mySongId);
+            btnPrev.setEnabled(false);
+            btnNext.setEnabled(false);
+        } else {
+            mySongId = getIntent().getStringExtra("sondIdFromService");
+            startWhenMusicIsPlaying(mySongId);
+        }
+
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+//                float percentage = (float) currentPosition / totalDuration;
+                slider.setValue(1);
+                handler.postDelayed(this, 500);
+            }
+        };
+        handler.postDelayed(runnable, 500);
     }
 
     @Override
     public void onBackPressed() {
+        MainActivity.status_player = true;
         finish();
         super.onBackPressed();
     }

@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +27,6 @@ import hcmute.edu.vn.spotifyclone.model.Song;
 
 public class CarouselSongAdapter extends FirestoreRecyclerAdapter<Song, CarouselSongAdapter.ViewHolder> {
 
-    LinearLayout song_layout;
     private Context context;
 
     public CarouselSongAdapter(@NonNull FirestoreRecyclerOptions<Song> options, Context context) {

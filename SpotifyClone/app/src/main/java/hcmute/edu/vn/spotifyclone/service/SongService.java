@@ -7,11 +7,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
@@ -20,6 +24,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import hcmute.edu.vn.spotifyclone.MusicPlay_Activity;
 import hcmute.edu.vn.spotifyclone.MyReceiver;
@@ -33,11 +39,16 @@ public class SongService extends Service {
     public static final int ACTION_CLEAR = 3;
     public static final int ACTION_NEXT = 4;
     public static final int ACTION_PREVIOUS = 5;
+    public static final int ACTION_SEND_INFO = 6;
+
 
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
     private Song recentSong;
+    public int totalDuration = 1;
+    private int currentProgress = 1;
     RemoteViews remoteViews;
+    private Handler mHandler;
 
     public SongService() {
     }
@@ -69,6 +80,15 @@ public class SongService extends Service {
 
         int musicAction = intent.getIntExtra("action_music_service", 0);
         handleMusicAction(musicAction);
+
+        mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sendProgressToActivity();
+                mHandler.postDelayed(this, 500);
+            }
+        }, 500);
 
         return START_NOT_STICKY;
     }
@@ -102,6 +122,7 @@ public class SongService extends Service {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mediaPlayer.start();
+                totalDuration = mediaPlayer.getDuration();
             }
         });
     }
@@ -127,6 +148,7 @@ public class SongService extends Service {
             isPlaying = true;
             sendNotification(recentSong);
             sendActionToActivity(ACTION_RESUME);
+            Log.e("prog", "is "+mediaPlayer.getCurrentPosition());
         }
     }
 
@@ -141,13 +163,22 @@ public class SongService extends Service {
 
     private void sendNotification(Song song) {
         Intent intent = new Intent(this, MusicPlay_Activity.class);
+        intent.putExtra("sondIdFromService", song.getSongId());
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         remoteViews.setTextViewText(R.id.tvTitleSong, song.getSongName());
         remoteViews.setTextViewText(R.id.tvSingerSong, song.getSinger());
-//        remoteViews.setImageViewUri(R.id.imgSong_fg, Uri.parse(song.getImage()));
+        InputStream inputStream = null;
+        try {
+            inputStream = new URL(song.getImage()).openStream();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+        remoteViews.setImageViewBitmap(R.id.imgSong_fg, bitmap);
+
 
         if(isPlaying == true) {
             remoteViews.setOnClickPendingIntent(R.id.btnPlay_fg, getPendingIntent(this, ACTION_PAUSE));
@@ -188,11 +219,22 @@ public class SongService extends Service {
     public void sendActionToActivity(int myaction){
         Intent intent = new Intent("send_action_to_act");
         Bundle bundle = new Bundle();
+        bundle.putSerializable("object_song", recentSong);
         bundle.putBoolean("status_player", isPlaying);
         bundle.putInt("action_music", myaction);
 
         intent.putExtras(bundle);
 
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
+    public void sendProgressToActivity(){
+        Intent intent = new Intent("send_in4_to_act");
+        Bundle bundle = new Bundle();
+        bundle.putInt("total_duration", totalDuration);
+        bundle.putInt("current_progress", mediaPlayer.getCurrentPosition());
+
+        intent.putExtras(bundle);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

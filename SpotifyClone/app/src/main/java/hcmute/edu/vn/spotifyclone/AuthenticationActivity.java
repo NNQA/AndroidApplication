@@ -30,6 +30,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     public EditText tiPassword;
 
     public Button signIn;
+    public Button signUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,14 @@ public class AuthenticationActivity extends AppCompatActivity {
         tiPassword = findViewById(R.id.tipassword);
 
         signIn = findViewById(R.id.SignInButton);
+        signUp = findViewById(R.id.SignUpButton);
 
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangeSignUp();
+            }
+        });
 
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,17 +92,6 @@ public class AuthenticationActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Login Success",
                                     Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-//                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName("Nguyen Dep Giai").build();
-//                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<Void> task) {
-//                                    if (task.isSuccessful()) {
-//                                        Log.d("TAG", "User profile updated.");
-//                                    }
-//                                }
-//                            });
-
-//                            signIn.setEnabled(true);
                             saveData("userName",user.getDisplayName());
                             saveData("uid", user.getUid());
                             ChangeScreen();
@@ -110,6 +107,31 @@ public class AuthenticationActivity extends AppCompatActivity {
                 });
     }
 
+    private void register(String email, String password, String name){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("Register", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d("TAG", "Regis Susccess");
+                                    }
+                                }
+                            });
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                        }
+                    }
+                });
+    }
     private void saveData(String key,String value){
         SharedPreferences sharedPreferences = getSharedPreferences("myRef",0);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -131,6 +153,11 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     public void ChangeScreen() {
         Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void ChangeSignUp() {
+        Intent intent = new Intent(this,Register.class);
         startActivity(intent);
     }
 
