@@ -3,12 +3,82 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ListPlayList">
+    tools:context=".ListPlayList"
+    android:background="@color/bg1"
+    android:id="@+id/listPlayList">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:orientation="horizontal"
+        android:id="@+id/navAction">
+        <androidx.appcompat.widget.SearchView
+
+            android:id="@+id/SearchView"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/textSearch"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/white"
+            android:hint="What do you wanna listen to?"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="5dp"
+
+            />
+        <androidx.constraintlayout.utils.widget.ImageFilterButton
+            android:id="@+id/addPlaylist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_48px"
+            android:tint="@color/white"
+            android:background="@color/bg1"
+            android:layout_marginLeft="40dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navAction"
+        android:padding="12dp"
+        android:id="@+id/listItem"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Playlist"
+            android:textColor="@color/white"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:background="@drawable/rounded_tag"
+            android:layout_marginRight="20dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Artists"
+            android:textColor="@color/white"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:background="@drawable/rounded_tag" />
+
+    </LinearLayout>
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/white"
+            android:layout_below="@+id/listItem"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewtimkiem"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/line"
+            android:background="@color/bg1"
+            android:visibility="visible"/>
+    </RelativeLayout>
 
 </FrameLayout>

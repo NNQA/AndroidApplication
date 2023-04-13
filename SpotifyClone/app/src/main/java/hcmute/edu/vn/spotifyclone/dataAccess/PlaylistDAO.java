@@ -3,6 +3,7 @@ package hcmute.edu.vn.spotifyclone.dataAccess;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,22 +22,26 @@ public class PlaylistDAO {
         void onSongLoadFailed(Exception e);
     }
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
-    public void addPlaylist(Playlist playlist) {
-        String id = UUID.randomUUID().toString();
-        playlist.setPlaylistId(id);
-        Log.d("aa", "addPlaylist: " );
 
+    public void addPlaylist(Playlist playlist, @Nullable Runnable onComplete, @Nullable Runnable onFailure) {
+        String id = UUID.randomUUID().toString();
         database.collection("playlist").document(id)
                 .set(playlist)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d("Success!", "Document Added successfully");
+                        if (onComplete != null) {
+                            onComplete.run();
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d("Failure", "Error when add document", e);
+                        if(onFailure != null) {
+                            onFailure.run();
+                        }
                     }
                 });
     }

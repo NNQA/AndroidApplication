@@ -1,6 +1,5 @@
 package hcmute.edu.vn.spotifyclone;
 
-import static hcmute.edu.vn.spotifyclone.R.id.profile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

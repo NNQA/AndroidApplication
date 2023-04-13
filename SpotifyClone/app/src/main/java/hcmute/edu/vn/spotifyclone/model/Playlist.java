@@ -3,17 +3,26 @@ package hcmute.edu.vn.spotifyclone.model;
 import hcmute.edu.vn.spotifyclone.user;
 
 public class Playlist {
-    public Playlist(String playlistId, String playListName, user auth, int image) {
+    public Playlist(String playlistId, String playListName, String image) {
         this.playlistId = playlistId;
         this.playListName = playListName;
-        this.auth = auth;
+        this.image = image;
+    }
+    public Playlist(String playlistId, String playListName, String authid, String image) {
+        this.playlistId = playlistId;
+        this.playListName = playListName;
+        this.authId = authid;
         this.image = image;
     }
 
     public String playlistId;
     public String playListName;
-    public user   auth;
-    public int    image;
+    public String   authId;
+    public String  image;
+
+    public Playlist() {
+
+    }
 
     public String getPlaylistId() {
         return playlistId;
@@ -31,19 +40,19 @@ public class Playlist {
         this.playListName = playListName;
     }
 
-    public user getAuth() {
-        return auth;
+    public String getAuth() {
+        return authId;
     }
 
-    public void setAuth(user auth) {
-        this.auth = auth;
+    public void setAuth(String authId) {
+        this.authId = authId;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

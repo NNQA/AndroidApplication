@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     public MusicPlay musicPlay_fragment = new MusicPlay();
     public Search search_fragment = new Search();
     private Song mySongVariable  = new Song();
+    private  add_item_playlist add_item_playlist = new add_item_playlist();
+    private ListPlayList listPlayList = new ListPlayList();
 
     FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         fragmentManager.beginTransaction().replace(R.id.main_fragment,search_fragment).commit();
                         return true;
                     case navigation_library:
-                        fragmentManager.beginTransaction().replace(R.id.main_fragment,playlist_fragment).commit();
+                        fragmentManager.beginTransaction().replace(R.id.main_fragment,listPlayList).commit();
+//                        fragmentManager.beginTransaction().replace(R.id.main_fragment,add_item_playlist).commit();
                         return true;
                     case navigation_profile:
                         fragmentManager.beginTransaction().replace(R.id.main_fragment,profile_fragment).commit();

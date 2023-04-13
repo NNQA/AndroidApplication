@@ -102,7 +102,7 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
         };
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView  txtName, txtad;
         RelativeLayout relativeLayout;

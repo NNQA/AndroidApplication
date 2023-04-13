@@ -3,12 +3,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".add_item_playlist">
+    tools:context=".add_item_playlist"
+    android:background="@drawable/gradient"
+    android:id="@+id/itemAddList"
+    >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="12dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Give Your playlist a name"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold"
+
+            ></TextView>
+
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="330dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edittext_bottom_line"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:layout_marginBottom="24dp"></EditText>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            >
+            <TextView
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedbutton"
+                android:backgroundTint="@null"
+                android:text="Cancle"
+                android:textColor="@color/white"
+                android:padding="14dp"
+                android:textSize="25dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center"
+
+                />
+            <TextView
+                android:id="@+id/addPlaylist"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundedbutton"
+                android:backgroundTint="@color/black"
+                android:text="Create"
+                android:textColor="@color/white"
+                android:padding="14dp"
+                android:textSize="25dp"
+                android:layout_marginLeft="30dp"
+                android:gravity="center"
+                />
+        </LinearLayout>
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </FrameLayout>
