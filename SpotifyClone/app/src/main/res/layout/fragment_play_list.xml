@@ -91,7 +91,7 @@
             android:layout_height="533dp"
             android:layout_below="@+id/iconPlay"
             android:layout_marginTop="49dp"
-            android:background="@color/white"
+            android:background="@color/bg1"
             android:visibility="visible" />
     </RelativeLayout>
 

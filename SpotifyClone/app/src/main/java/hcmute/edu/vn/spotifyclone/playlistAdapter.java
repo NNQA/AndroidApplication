@@ -2,6 +2,7 @@ package hcmute.edu.vn.spotifyclone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -86,7 +90,15 @@ public class playlistAdapter extends RecyclerView.Adapter<playlistAdapter.ViewHo
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigateSongScreen(playlist.getPlaylistId());
+                PlayList playListFr = new PlayList();
+                Bundle args = new Bundle();
+                args.putString("playlistId", playlist.getPlaylistId());
+                args.putString("playlistName", playlist.getPlayListName());
+                playListFr.setArguments(args);
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.listPlayList, playListFr);
+                fragmentTransaction.commit();
             }
         });
     }

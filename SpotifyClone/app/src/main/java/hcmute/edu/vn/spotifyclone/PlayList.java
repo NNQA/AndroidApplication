@@ -2,17 +2,28 @@ package hcmute.edu.vn.spotifyclone;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import hcmute.edu.vn.spotifyclone.model.Song;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +36,8 @@ public class PlayList extends Fragment {
     LinearLayoutManager linearLayout;
     View view;
     FragmentManager fragmentManager;
+    String playlistId;
+    TextView textView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,26 +88,64 @@ public class PlayList extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_play_list, container, false);
         recyclerView = view.findViewById(R.id.recyclerviewtimkiem);
+        textView = view.findViewById(R.id.namePlayList);
         linearLayout = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(linearLayout);
-
-//        searchListAdapter = new searchListAdapter(getListUsers());
+        playlistId = getArguments().getString("playlistId");
+        String playlistName = getArguments().getString("playlistName");
+        Log.d("TAG", "Error getting playlists: " + playlistId);
+        List<Song> songList = new ArrayList<>();
+        FindListSongs(new OnSuccessListener<List<DocumentSnapshot>>() {
+            @Override
+            public void onSuccess(List<DocumentSnapshot> songDocuments) {
+                for (DocumentSnapshot songDocument : songDocuments) {
+                    Song song = songDocument.toObject(Song.class);
+                    songList.add(song);
+                }
+                songList.forEach((e) -> {
+                    Log.d("asd", "onSuccess: " + e.getSongName());
+                });
+                searchListAdapter.notifyDataSetChanged();
+            }
+        }, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("PlaylistFragment", "Error getting song documents", e);
+            }
+        });
+        searchListAdapter =  new searchListAdapter(this.getActivity(), songList);
         recyclerView.setAdapter(searchListAdapter);
 
         return view;
     }
 
-    private List<user> getListUsers() {
-        List<user> list = new ArrayList<>();
-        list.add(new user(R.drawable.headphone1,"hay trao cho anh","son tung"));
-        list.add(new user(R.drawable.headphone2,"em cua ngay hom qua","son tung"));
-        list.add(new user(R.drawable.headphone3,"anh sai roi","son tung"));
-        list.add(new user(R.drawable.headphone4,"chay ngay di","son tung"));
-        list.add(new user(R.drawable.headphone1,"con mua ngang qua","son tung"));
-        list.add(new user(R.drawable.headphone2,"con mua ngang qua 2","son tung"));
-        list.add(new user(R.drawable.headphone3,"con mua ngang qua 3","son tung"));
-        list.add(new user(R.drawable.headphone4,"co chac yeu la day","son tung"));
-        list.add(new user(R.drawable.headphone1,"chung ta cua hien tai","son tung"));
-        return list;
+    private void FindListSongs(OnSuccessListener<List<DocumentSnapshot>> onSuccessListener, OnFailureListener onFailureListener) {
+        final FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection("playlist_song")
+                .whereEqualTo("playlistId", playlistId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                        List<String> songIds = new ArrayList<>();
+                        for (DocumentSnapshot documentSnapshot : snapshotList) {
+                            Log.d("asd", "onSuccess: " + documentSnapshot.getString("songId"));
+                            songIds.add(documentSnapshot.getString("songId"));
+
+                        }
+                        database.collection("songs")
+                                .whereIn("songId", songIds)
+                                .get()
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                        onSuccessListener.onSuccess(queryDocumentSnapshots.getDocuments());
+                                    }
+                                })
+                                .addOnFailureListener(onFailureListener);
+                    }
+                })
+                .addOnFailureListener(onFailureListener);
     }
 }
