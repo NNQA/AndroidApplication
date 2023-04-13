@@ -24,7 +24,7 @@
         <service
             android:name=".service.SongService"
             android:enabled="true"
-<<<<<<< HEAD
+
             android:exported="true"></service>
          <activity
          android:name=".MusicPlay_Activity"
@@ -36,8 +36,6 @@
             android:name=".PlayList"
             android:exported="false" />
         <!-- <activity -->
-=======
-            android:exported="true" />
 
         <activity
             android:name=".MusicPlay_Activity"
@@ -45,7 +43,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" /> <!-- <activity -->
->>>>>>> dd34e744d97cd0cc01ddc7c82850bd1247263823
+
         <!-- android:name=".MainActivity" -->
         <!-- android:exported="true"> -->
         <!-- <intent-filter> -->
