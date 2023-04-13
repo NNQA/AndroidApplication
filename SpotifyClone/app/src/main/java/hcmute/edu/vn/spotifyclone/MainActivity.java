@@ -3,20 +3,31 @@ package hcmute.edu.vn.spotifyclone;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import hcmute.edu.vn.spotifyclone.model.Song;
+import hcmute.edu.vn.spotifyclone.service.SongService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +52,34 @@ public class MainActivity extends AppCompatActivity {
     private ListPlayList listPlayList = new ListPlayList();
 
     FragmentManager fragmentManager = getSupportFragmentManager();
+//    Component
+    private TextView spSongTitle, spSinger;
+    private MaterialButton spBtnPlay;
+    private ShapeableImageView spImgSong;
+    private RelativeLayout smallPlayer;
+//    Variable
+    public static boolean status_player = false;
+    public boolean isPlaying = true;
+    public boolean isServiceRunning = true;
+    public Song recentSong;
+    public String mySongId = "";
+//    Broadcast
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle bundle = intent.getExtras();
+            if(bundle == null) {
+                return;
+            }
+
+            isPlaying = bundle.getBoolean("status_player");
+            int musicAction = bundle.getInt("action_music");
+            recentSong = (Song) bundle.getSerializable("object_song");
+
+            handleMusicAction(musicAction);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
+//        Broadcast
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(broadcastReceiver, new IntentFilter("send_action_to_act"));
+
+//        Init component
+        spSongTitle = findViewById(R.id.smallPlayer_title);
+        spSinger = findViewById(R.id.smallPlayer_singer);
+        spBtnPlay = findViewById(R.id.smallPlayer_btnPlay);
+        spImgSong = findViewById(R.id.smallPlayer_imgSong);
+        smallPlayer = findViewById(R.id.smallPlayer);
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy gfgPolicy =
@@ -89,15 +140,52 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager.beginTransaction().replace(R.id.main_fragment,home_fragment).commit();
 
+//        Componet onClick Event
+        spBtnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isServiceRunning){
+                    Log.e("Mess", "is "+isPlaying);
+                    if (isPlaying){
+                        sendActToService(SongService.ACTION_PAUSE);
+                    } else {
+                        sendActToService(SongService.ACTION_RESUME);
+                    }
+                } else {
+//                    isPlaying = true;
+//                    openBigPlayer(recentSong.getSongId());
+                }
+            }
+        });
+
+        smallPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.e("abc", "s "+status_player);
+        if(status_player == true) {
+            smallPlayer.setVisibility(View.VISIBLE);
+        }
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             //reload();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
     private void createAccount(String email, String password){
@@ -138,5 +226,47 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+
+//    Handle music play
+    private void handleMusicAction(int action) {
+        switch (action){
+            case SongService.ACTION_PAUSE:
+                setStatusButtonPlay();
+                break;
+            case SongService.ACTION_RESUME:
+                setStatusButtonPlay();
+                break;
+            case SongService.ACTION_CLEAR:
+                spBtnPlay.setIconResource(R.drawable.button_play);
+                isServiceRunning = false;
+                break;
+        }
+    }
+
+    public void setStatusButtonPlay(){
+        if(isPlaying){
+            spBtnPlay.setIconResource(R.drawable.button_pause);
+        } else {
+            spBtnPlay.setIconResource(R.drawable.button_play);
+        }
+    }
+
+    void openBigPlayer(String songId) {
+        Intent intent = new Intent(MainActivity.this,MusicPlay_Activity.class);
+        intent.putExtra("sondId2",songId);
+        startActivity(intent);
+    }
+
+    public void sendActToService(int action){
+        Intent intent = new Intent(this, SongService.class);
+        intent.putExtra("action_music_service", action);
+
+        startService(intent);
+    }
+
+    public void setInfomation(Song song){
+        spBtnPlay.setIconResource(R.drawable.button_pause);
     }
 }
