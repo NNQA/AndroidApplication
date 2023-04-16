@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -12,8 +14,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,6 +29,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import hcmute.edu.vn.spotifyclone.dataAccess.PlaylistDAO;
 import hcmute.edu.vn.spotifyclone.model.Playlist;
 import hcmute.edu.vn.spotifyclone.model.Song;
 
@@ -101,6 +107,40 @@ public class playlistAdapter extends RecyclerView.Adapter<playlistAdapter.ViewHo
                 fragmentTransaction.commit();
             }
         });
+        holder.appCompatImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.inflate(R.menu.menu_item_actionplaylist);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.option_1:
+                                // Handle option 1 click
+                                return true;
+                            case R.id.option_2:
+                                // Handle option 2 click
+                                return true;
+                            case R.id.option_3:
+                                String idDelete = playlist.getPlaylistId();
+
+
+                                PlaylistDAO playlistDAO = new PlaylistDAO();
+                                playlistDAO.deletePlaylist(idDelete,context);
+                                mlplaylist.remove(position);
+                                notifyItemRemoved(position);
+                                Toast.makeText(context, "Deleting playlist...", Toast.LENGTH_SHORT).show();
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
     }
 
     @Override
@@ -113,13 +153,15 @@ public class playlistAdapter extends RecyclerView.Adapter<playlistAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView txtName, txtad;
-        RelativeLayout relativeLayout;
+        RelativeLayout     relativeLayout;
+        AppCompatImageView appCompatImageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             relativeLayout = itemView.findViewById(R.id.itemShow);
             imageView = itemView.findViewById(R.id.imageSearch);
             txtName = itemView.findViewById(R.id.titleName);
             txtad = itemView.findViewById(R.id.desciption);
+            appCompatImageView = itemView.findViewById(R.id.actionPlaylist);
         }
     }
     void navigateSongScreen(String playlistId) {

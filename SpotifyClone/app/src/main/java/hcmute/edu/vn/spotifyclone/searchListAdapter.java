@@ -39,6 +39,9 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
         this.mlsongOld = mluser;
         this.context = context;
     }
+    public searchListAdapter(Context context) {
+        this.context = context;
+    }
 
     @NonNull
     @Override
