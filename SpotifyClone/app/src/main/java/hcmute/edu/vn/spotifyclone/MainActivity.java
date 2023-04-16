@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean status_player = false;
     public boolean isPlaying = true;
     public boolean isServiceRunning = true;
-    public Song recentSong;
+    public static Song recentSong;
     public String mySongId = "";
 //    Broadcast
 
@@ -175,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         Log.e("abc", "s "+status_player);
         if(status_player == true) {
             smallPlayer.setVisibility(View.VISIBLE);
+            setInfomation(recentSong);
         }
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -241,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             case SongService.ACTION_CLEAR:
                 spBtnPlay.setIconResource(R.drawable.button_play);
                 isServiceRunning = false;
+                smallPlayer.setVisibility(View.GONE);
                 break;
         }
     }
@@ -255,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
 
     void openBigPlayer(String songId) {
         Intent intent = new Intent(MainActivity.this,MusicPlay_Activity.class);
-        intent.putExtra("sondId2",songId);
         startActivity(intent);
     }
 
@@ -268,5 +270,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void setInfomation(Song song){
         spBtnPlay.setIconResource(R.drawable.button_pause);
+        spSongTitle.setText(song.getSongName());
+        spSinger.setText(song.getSinger());
+        Glide.with(getApplicationContext()).load(recentSong.getImage()).into(spImgSong);
     }
 }

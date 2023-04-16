@@ -26,6 +26,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import hcmute.edu.vn.spotifyclone.MusicPlay_Activity;
 import hcmute.edu.vn.spotifyclone.MyReceiver;
@@ -45,6 +47,7 @@ public class SongService extends Service {
     private MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
     private Song recentSong;
+    private List<Song> recentPlaylist = new ArrayList<>();
     public int totalDuration = 1;
     private int currentProgress = 1;
     RemoteViews remoteViews;
@@ -139,6 +142,12 @@ public class SongService extends Service {
                 stopSelf();
                 sendActionToActivity(ACTION_CLEAR);
                 break;
+            case ACTION_NEXT:
+                sendActionToActivity(ACTION_NEXT);
+                break;
+            case ACTION_PREVIOUS:
+                sendActionToActivity(ACTION_PREVIOUS);
+                break;
         }
     }
 
@@ -148,7 +157,6 @@ public class SongService extends Service {
             isPlaying = true;
             sendNotification(recentSong);
             sendActionToActivity(ACTION_RESUME);
-            Log.e("prog", "is "+mediaPlayer.getCurrentPosition());
         }
     }
 
@@ -189,6 +197,9 @@ public class SongService extends Service {
         }
 
         remoteViews.setOnClickPendingIntent(R.id.btnClear, getPendingIntent(this, ACTION_CLEAR));
+        remoteViews.setOnClickPendingIntent(R.id.btnNext_fg, getPendingIntent(this, ACTION_NEXT));
+        remoteViews.setOnClickPendingIntent(R.id.btnPrevious_fg, getPendingIntent(this, ACTION_PREVIOUS));
+
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.play_arrow)
@@ -229,6 +240,11 @@ public class SongService extends Service {
     }
 
     public void sendProgressToActivity(){
+
+        if (mediaPlayer == null){
+            mHandler.removeCallbacksAndMessages(null);
+            return;
+        }
         Intent intent = new Intent("send_in4_to_act");
         Bundle bundle = new Bundle();
         bundle.putInt("total_duration", totalDuration);
