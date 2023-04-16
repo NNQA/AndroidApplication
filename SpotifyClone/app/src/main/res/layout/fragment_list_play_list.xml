@@ -78,7 +78,10 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/line"
             android:background="@color/bg1"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:scrollbarThumbVertical="@drawable/scrollbar_vertical"/>
     </RelativeLayout>
 
 </FrameLayout>
