@@ -1,5 +1,6 @@
 package hcmute.edu.vn.spotifyclone;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -110,13 +111,17 @@ public class ListPlayList extends Fragment {
             }
         });
         searchView = view.findViewById(R.id.SearchView);
+        Context context = this.getActivity();
 
         getListUsers(new OnSuccessListener<List<Playlist>>() {
             @Override
             public void onSuccess(List<Playlist> list) {
                 playlists.addAll(list);
-                playlistAdapter.notifyDataSetChanged();
-
+                if(playlists != null) {
+                    playlistAdapter = new playlistAdapter(context,playlists);
+                    playlistAdapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(playlistAdapter);
+                }
             }
         }, new OnFailureListener() {
             @Override
@@ -125,9 +130,6 @@ public class ListPlayList extends Fragment {
                 Log.d("TAG", "Error getting playlists: " + e.getMessage());
             }
         });
-
-        playlistAdapter = new playlistAdapter(this.getActivity(),playlists);
-        recyclerView.setAdapter(playlistAdapter);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

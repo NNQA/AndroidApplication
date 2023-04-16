@@ -1,6 +1,8 @@
 package hcmute.edu.vn.spotifyclone.dataAccess;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,7 @@ public class PlaylistDAO {
         void onSongLoadFailed(Exception e);
     }
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
+
 
     public void addPlaylist(Playlist playlist, @Nullable Runnable onComplete, @Nullable Runnable onFailure) {
         String id = UUID.randomUUID().toString();
@@ -83,14 +86,38 @@ public class PlaylistDAO {
                     }
                 });
     }
-    public void deletePlaylist(String idPlaylist) {
-        database.collection("playlist").document(idPlaylist).delete()
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("success", "Document deleted successfully");
+    public interface OnDeletePlaylistListener {
+        void onDeleteSuccess();
+        void onDeleteFailure(String errorMessage);
+
+        void onDeletePlaylistSuccess();
+
+        void onDeletePlaylistFailure();
+    }
+    public void deletePlaylist(String playlistId, Context context) {
+        database.collection("playlist")
+                .whereEqualTo("playlistId", playlistId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots.getDocuments().size() > 0) {
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        database.collection("playlist").document(documentSnapshot.getId())
+                                .delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("success", "Document deleted successfully");
+                                    Toast.makeText(context, "Playlist deleted", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.w("failure", "Error when delete document", e);
+                                    Toast.makeText(context, "Failed to delete playlist", Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        Toast.makeText(context, "Playlist not found", Toast.LENGTH_SHORT).show();
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Log.w("failure", "Error when delete document", e);
+                    Log.w("failure", "Error when get document", e);
+                    Toast.makeText(context, "Failed to get playlist", Toast.LENGTH_SHORT).show();
                 });
     }
-
 }

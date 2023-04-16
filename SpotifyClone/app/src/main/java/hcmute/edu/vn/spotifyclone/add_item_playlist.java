@@ -1,9 +1,11 @@
 package hcmute.edu.vn.spotifyclone;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -98,6 +100,19 @@ public class add_item_playlist extends Fragment {
         editText = view.findViewById(R.id.input);
         SharedPreferences sharedPreferences=this.getContext().getSharedPreferences("myRef",0);
         PlaylistDAO playlistDAO = new PlaylistDAO();
+        TextView button = view.findViewById(R.id.cancle);
+        Context context = this.getActivity();
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment listPlayList = new ListPlayList();
+                fragmentTransaction.replace(R.id.itemAddList, listPlayList);
+                fragmentTransaction.commit();
+            }
+        });
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,10 +1,16 @@
 package hcmute.edu.vn.spotifyclone;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import hcmute.edu.vn.spotifyclone.model.Song;
@@ -81,6 +89,8 @@ public class PlayList extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    private Context activity;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,12 +99,18 @@ public class PlayList extends Fragment {
         view =  inflater.inflate(R.layout.fragment_play_list, container, false);
         recyclerView = view.findViewById(R.id.recyclerviewtimkiem);
         textView = view.findViewById(R.id.namePlayList);
+        TextView name = view.findViewById(R.id.nameUser);
         linearLayout = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(linearLayout);
         playlistId = getArguments().getString("playlistId");
         String playlistName = getArguments().getString("playlistName");
+        TextView button = view.findViewById(R.id.back);
+        textView.setText(playlistName);
         Log.d("TAG", "Error getting playlists: " + playlistId);
         List<Song> songList = new ArrayList<>();
+        Context context = this.getActivity();
+        SharedPreferences sharedPreferences=this.getContext().getSharedPreferences("myRef",0);
+        name.setText(sharedPreferences.getString("userName",null));
         FindListSongs(new OnSuccessListener<List<DocumentSnapshot>>() {
             @Override
             public void onSuccess(List<DocumentSnapshot> songDocuments) {
@@ -105,6 +121,11 @@ public class PlayList extends Fragment {
                 songList.forEach((e) -> {
                     Log.d("asd", "onSuccess: " + e.getSongName());
                 });
+                if (songList != null) {
+                    searchListAdapter = new searchListAdapter(context, songList);
+                    searchListAdapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(searchListAdapter);
+                }
                 searchListAdapter.notifyDataSetChanged();
             }
         }, new OnFailureListener() {
@@ -113,11 +134,22 @@ public class PlayList extends Fragment {
                 Log.e("PlaylistFragment", "Error getting song documents", e);
             }
         });
-        searchListAdapter =  new searchListAdapter(this.getActivity(), songList);
-        recyclerView.setAdapter(searchListAdapter);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                Fragment listPlayList = new ListPlayList();
+                fragmentTransaction.replace(R.id.playlist, listPlayList);
+                fragmentTransaction.commit();
+            }
+        });
+
 
         return view;
     }
+
+
 
     private void FindListSongs(OnSuccessListener<List<DocumentSnapshot>> onSuccessListener, OnFailureListener onFailureListener) {
         final FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -132,18 +164,22 @@ public class PlayList extends Fragment {
                         for (DocumentSnapshot documentSnapshot : snapshotList) {
                             Log.d("asd", "onSuccess: " + documentSnapshot.getString("songId"));
                             songIds.add(documentSnapshot.getString("songId"));
-
                         }
-                        database.collection("songs")
-                                .whereIn("songId", songIds)
-                                .get()
-                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        onSuccessListener.onSuccess(queryDocumentSnapshots.getDocuments());
-                                    }
-                                })
-                                .addOnFailureListener(onFailureListener);
+                        if (!songIds.isEmpty()) { // check if songIds list is not empty
+                            database.collection("songs")
+                                    .whereIn("songId", songIds)
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                            onSuccessListener.onSuccess(queryDocumentSnapshots.getDocuments());
+                                            Log.d("asd", "Number of songs retrieved: " + queryDocumentSnapshots.getDocuments().size());
+                                        }
+                                    })
+                                    .addOnFailureListener(onFailureListener);
+                        } else {
+                            onSuccessListener.onSuccess(Collections.emptyList()); // return empty list if songIds list is empty
+                        }
                     }
                 })
                 .addOnFailureListener(onFailureListener);
