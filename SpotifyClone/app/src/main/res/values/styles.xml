@@ -15,5 +15,9 @@
         <item name="cornerSize">30dp</item>
         <item name="android:background">#baa460</item>
     </style>
+    <style name="RoundedAddBtn">
 
+        <item name="cornerSize">30dp</item>
+        <item name="android:background">@color/black</item>
+    </style>
 </resources>

@@ -10,7 +10,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +33,14 @@ public class SongDAO {
         void onSongLoaded(Song song);
         void onSongLoadFailed(Exception e);
     }
+
+    public interface SongIdCallback {
+        void onIdLoad(String id);
+        void onSongLoadFailed(Exception e);
+    }
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
 
-    public void addSong(Song song) {
+    public void addSong(Song song, final SongIdCallback callback) {
         String songId = UUID.randomUUID().toString();
         song.setSongId(songId);
 
@@ -38,6 +50,7 @@ public class SongDAO {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d("Success!", "Document Added successfully");
+                        callback.onIdLoad(songId);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -112,6 +125,22 @@ public class SongDAO {
                 });
     }
 
+    public void updateOnlyField(String documentId,String fieldName,String data){
+        database.collection("songs").document(documentId).update(fieldName,data).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d("Update", "Update document field success");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("Update", "Update document field fail");
+            }
+        });
+
+
+    }
+
     public void deleteSong(String songId) {
 
         database.collection("songs").document(songId).delete()
@@ -122,5 +151,6 @@ public class SongDAO {
                     Log.w("failure", "Error when delete document", e);
                 });
     }
+
 
 }

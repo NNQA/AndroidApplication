@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AuthenticationActivity"
+    android:background="#0e0e0e"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="Upload Song"
+                app:titleTextColor="@color/white"
+                android:background="@color/black"
+                app:navigationIcon="@drawable/arrow_back_24px" />
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="60dp"
+            >
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Song Name"
+                                android:textColor="#ffffff"
+                                android:textSize="25dp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.108"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.01" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Singer"
+                                android:textColor="#ffffff"
+                                android:textSize="25dp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.106"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.213" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Song Image"
+                                android:textColor="#ffffff"
+                                android:textSize="25dp"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.128"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.42" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose Song"
+                android:textColor="#ffffff"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.139"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.661" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/songname_edittext"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:maxLines="1"
+                                android:textColorHint="#cccccc"
+                                app:boxBackgroundColor="#414141"
+                                app:hintTextColor="#cccccc"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.084">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="350dp"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Enter Song Name"
+                                    android:id="@+id/et_song_name"
+                                    android:inputType="text"
+                                    android:textColor="#ffffff"
+                                    android:textColorHint="#cccccc"
+                                    android:textSize="20dp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/textInputLayout"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:maxLines="1"
+                                android:textColorHint="#cccccc"
+                                app:boxBackgroundColor="#414141"
+                                app:hintTextColor="#cccccc"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.299">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="350dp"
+                                    android:id="@+id/et_singer"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Enter Singer"
+                                    android:inputType="textEmailAddress"
+                                    android:textColor="#ffffff"
+                                    android:textColorHint="#cccccc"
+                                    android:textSize="20dp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <LinearLayout
+                                android:orientation="horizontal"
+
+                                android:gravity="center_vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="30dp"
+                                android:layout_marginTop="30dp"
+                                android:maxLines="1"
+                                android:textColorHint="#cccccc"
+                                app:boxBackgroundColor="#414141"
+                                app:endIconMode="password_toggle"
+                                app:hintTextColor="#cccccc"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.519"
+                                app:passwordToggleEnabled="true">
+                                <ImageView
+                                    android:id="@+id/song_image"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    android:src="@drawable/blank_image"
+                                    android:background="@drawable/ronded_add_btn"
+                                    />
+
+                                <Button
+                                    style="?attr/materialButtonOutlinedStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="35dp"
+                                    android:paddingVertical="15dp"
+                                    android:id="@+id/add_image_btn"
+                                    android:text="+ Choose"
+                                    android:textColor="#d7d7d7"
+                                    android:textSize="20dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/SignUpButton"
+                                    app:layout_constraintHorizontal_bias="0.344"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.93"
+                                    app:shapeAppearanceOverlay="@style/roundedButton"
+                                    app:strokeColor="#3a3a3c"
+                                    app:strokeWidth="3dp"
+                                    android:layout_marginLeft="20dp"
+                                    />
+                            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="25dp"
+                android:layout_marginTop="60dp"
+                android:maxLines="1"
+                android:gravity="center_vertical"
+                android:textColorHint="#cccccc"
+                app:boxBackgroundColor="#414141"
+                app:endIconMode="password_toggle"
+                app:hintTextColor="#cccccc"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.73"
+                >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColorHint="#cccccc"
+                    app:boxBackgroundColor="#414141"
+                    app:hintTextColor="#cccccc"
+
+                    >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_song_uri"
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:hint="Choose Your song"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
+
+                        android:editable="false"
+                        />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:id="@+id/upload_song_uri_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ios_share_40px"
+                    android:layout_marginLeft="10dp"
+                    />
+            </LinearLayout>
+
+
+
+
+            <Button
+                android:id="@+id/main_upload_song_btn"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="35dp"
+                android:paddingVertical="15dp"
+                android:text="Upload"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                app:backgroundTint="#1eb955"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.896"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.93"
+                app:shapeAppearanceOverlay="@style/roundedButton"
+                app:strokeWidth="3dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

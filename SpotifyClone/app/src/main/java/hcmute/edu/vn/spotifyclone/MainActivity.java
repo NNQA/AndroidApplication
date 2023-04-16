@@ -2,14 +2,17 @@ package hcmute.edu.vn.spotifyclone;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean isServiceRunning = true;
     public static Song recentSong;
     public String mySongId = "";
+    private int EXTERNAL_STORAGE_PERMISSION_CODE = 23;
 //    Broadcast
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -89,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
+
 
 //        Broadcast
         LocalBroadcastManager.getInstance(this)

@@ -63,15 +63,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/user_info">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="30dp"
-                android:text="Shared Music"
-                android:textColor="@color/white"
-                android:textSize="25sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content">
+
+                <TextView
+
+                    android:layout_width="355dp"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="30dp"
+                    android:text="Shared Music"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/add_song_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/add_48px"
+
+                  />
+            </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 xmlns:android="http://schemas.android.com/apk/res/android"

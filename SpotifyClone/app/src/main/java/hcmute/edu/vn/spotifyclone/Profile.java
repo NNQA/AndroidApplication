@@ -1,47 +1,58 @@
 package hcmute.edu.vn.spotifyclone;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.customview.widget.Openable;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import hcmute.edu.vn.spotifyclone.model.Song;
 
 
 public class Profile extends Fragment {
-
+    FirebaseStorage storage;
     public TextView tvUsername;
     private final FirebaseFirestore database = FirebaseFirestore.getInstance();
     RecyclerView recyclerView;
     LinearSongAdapter adapter;
+    ImageView add_song_btn;
+    int SELECT_PICTURE = 200;
 
 
     @Override
@@ -53,9 +64,24 @@ public class Profile extends Fragment {
         tvUsername.setText(getData("userName"));
 
         recyclerView = view.findViewById(R.id.ln_recycle_layout);
+        add_song_btn = view.findViewById(R.id.add_song_btn);
+
+        add_song_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ChangeScreen();
+            }
+        });
+
         setupSharedSongRecycleView();
         return view;
 
+    }
+
+    public void ChangeScreen() {
+        Intent intent = new Intent(getContext(),UploadMusic.class);
+        startActivity(intent);
     }
 
     void setupSharedSongRecycleView(){
@@ -95,6 +121,18 @@ public class Profile extends Fragment {
         else{
             return null;
         }
+    }
+    public void downloadSong(Song song) {
+        String fileName = song.getSongName() + ".mp3";
+
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(song.getSource());
+        File localFile = new File(fileName);
+        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+              Log.d("file","download in" + fileName);
+            }
+        });
     }
 
 }
