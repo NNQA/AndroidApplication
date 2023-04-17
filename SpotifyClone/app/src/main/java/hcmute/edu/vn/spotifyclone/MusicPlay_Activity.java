@@ -101,14 +101,10 @@ public class MusicPlay_Activity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver2, new IntentFilter("send_in4_to_act"));
 
-<<<<<<< Updated upstream
-
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver2, new IntentFilter("send_in4_to_act"));
 
-
-=======
->>>>>>> Stashed changes
+        
         btnMore = findViewById(R.id.btnMore);
         btnPlay = findViewById(R.id.btnPlay);
         btnNext = findViewById(R.id.btnNext);
