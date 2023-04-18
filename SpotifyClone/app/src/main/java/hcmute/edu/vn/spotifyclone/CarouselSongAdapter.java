@@ -51,7 +51,6 @@ public class CarouselSongAdapter extends FirestoreRecyclerAdapter<Song, Carousel
             @Override
             public void onClick(View v) {
                 navigateSongScreen(song.getSongId());
-
             }
         });
     }

@@ -104,7 +104,6 @@ public class MusicPlay_Activity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver2, new IntentFilter("send_in4_to_act"));
 
-        
         btnMore = findViewById(R.id.btnMore);
         btnPlay = findViewById(R.id.btnPlay);
         btnNext = findViewById(R.id.btnNext);
