@@ -96,6 +96,15 @@ public class MusicPlay_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_play);
 
+//        ArrayList<Song> songList = (ArrayList<Song>) getIntent().getSerializableExtra("songList");
+//        if(songList != null) {
+//            songList.forEach((e) -> {
+//                Log.d("asd", "onSuccess: " + e.getSongName());
+//            });
+//        } else {
+//            Log.d("asdasd", "onCreate: asdasd");
+//        }
+
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver, new IntentFilter("send_action_to_act"));
         LocalBroadcastManager.getInstance(this)
@@ -342,11 +351,13 @@ public class MusicPlay_Activity extends AppCompatActivity {
         super.onStart();
 //        mySongId = "1q4TGECGjQliuz1q8K4f";
         mySongId = getIntent().getStringExtra("sondId");
+
         if (mySongId != null) {
             startPlayMusic(mySongId);
         } else {
-            mySongId = getIntent().getStringExtra("sondIdFromService");
-            startWhenMusicIsPlaying(mySongId);
+//            mySongId = getIntent().getStringExtra("sondIdFromService");
+//            mySongId = getIntent().getStringExtra("PlaylistIDintent");
+//            startWhenMusicIsPlaying(mySongId);
         }
     }
 

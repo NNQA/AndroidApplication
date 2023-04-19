@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +34,17 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
     private List<Song> mlsong;
     private List<Song> mlsongOld;
     private Context        context;
-
-
+    String playlistId;
     public searchListAdapter(Context context,List<Song> mluser) {
         this.mlsong = mluser;
         this.mlsongOld = mluser;
         this.context = context;
+    }
+    public searchListAdapter(Context context,List<Song> mluser,String playlistId) {
+        this.mlsong = mluser;
+        this.mlsongOld = mluser;
+        this.context = context;
+        this.playlistId = playlistId;
     }
     public searchListAdapter(Context context) {
         this.context = context;
@@ -119,8 +126,11 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
         }
     }
     void navigateSongScreen(String songId) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("PlaylistIDintent", playlistId);
         Intent intent = new Intent(context,MusicPlay_Activity.class);
         intent.putExtra("sondId",songId);
-        context.startActivity(intent);
+        Log.d("id", "navigateSongScreen: " + playlistId + songId);
     }
 }
