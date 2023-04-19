@@ -129,8 +129,10 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
         Bundle bundle = new Bundle();
 
         bundle.putString("PlaylistIDintent", playlistId);
-        Intent intent = new Intent(context,MusicPlay_Activity.class);
-        intent.putExtra("sondId",songId);
-        Log.d("id", "navigateSongScreen: " + playlistId + songId);
+        bundle.putString("sondId", songId);
+        Intent intent = new Intent(context, MusicPlay_Activity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+        Log.d("id", "navigateSongScreen: " + playlistId + "/"+songId);
     }
 }
