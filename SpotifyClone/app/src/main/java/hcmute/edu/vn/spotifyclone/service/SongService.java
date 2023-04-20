@@ -199,17 +199,23 @@ public class SongService extends Service {
     private void previousMusic() {
         if(indexSong - 1 >= 0) {
             indexSong --;
-            recentSong = recentPlaylist.get(indexSong);
-            runMusic(recentSong);
+        } else {
+            indexSong = recentPlaylist.size() - 1;
         }
+        recentSong = recentPlaylist.get(indexSong);
+        runMusic(recentSong);
+        sendNotification(recentSong);
     }
 
     private void nextMusic() {
         if (indexSong + 1 < recentPlaylist.size()){
             indexSong++;
-            recentSong = recentPlaylist.get(indexSong);
-            runMusic(recentSong);
+        } else {
+            indexSong = 0;
         }
+        recentSong = recentPlaylist.get(indexSong);
+        runMusic(recentSong);
+        sendNotification(recentSong);
     }
 
     private void resumeMusic() {

@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:contentDescription="Volume"
         android:valueFrom="0.0f"
-        android:valueTo="100.0f"
+        android:valueTo="101.0f"
         app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
