@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/option_1"
+    <item android:id="@+id/addToPlaylistOption"
         android:title="Add to playlist" />
-    <item android:id="@+id/option_2"
+    <item android:id="@+id/removeFromPlaylistOption"
         android:title="Remove from playlist" />
-    <item android:id="@+id/option_3"
-        android:title="Visit Singer page" />
-    <item android:id="@+id/option_4"
+    <item android:id="@+id/downloadSongOption"
         android:title="Download" />
 </menu>
