@@ -2,6 +2,7 @@ package hcmute.edu.vn.spotifyclone;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,7 +93,8 @@ public class playlistAdapter extends RecyclerView.Adapter<playlistAdapter.ViewHo
         if(playlist == null) return;
         Glide.with(context).load(playlist.getImage()).into(holder.imageView);
         holder.txtName.setText(playlist.getPlayListName());
-        holder.txtad.setText("a");
+        SharedPreferences sharedPreferences=this.context.getSharedPreferences("myRef",0);
+        holder.txtad.setText(sharedPreferences.getString("userName",null));
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

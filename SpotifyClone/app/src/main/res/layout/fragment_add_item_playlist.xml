@@ -36,9 +36,40 @@
             android:textColor="@color/white"
             android:layout_marginBottom="24dp"></EditText>
         <LinearLayout
+            android:orientation="horizontal"
+
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="30dp"
+            android:layout_marginTop="30dp"
+            android:maxLines="1"
+            android:textColorHint="#cccccc">
+
+            <ImageView
+                android:id="@+id/song_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/blank_image"
+                android:background="@drawable/ronded_add_btn"
+                />
+
+            <Button
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="35dp"
+                android:paddingVertical="15dp"
+                android:id="@+id/add_image_btn"
+                android:text="+ Choose Image"
+                android:textColor="#d7d7d7"
+                android:layout_marginLeft="20dp"
+                />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginTop="32dp"
             >
             <TextView
                 android:id="@+id/cancle"

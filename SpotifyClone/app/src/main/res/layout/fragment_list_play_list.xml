@@ -20,14 +20,13 @@
 
             android:id="@+id/SearchView"
             android:layout_width="280dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_below="@id/textSearch"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/white"
             android:hint="What do you wanna listen to?"
             android:paddingLeft="10dp"
             android:layout_marginTop="5dp"
-
             />
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/addPlaylist"
@@ -70,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:background="@android:color/white"
-            android:layout_below="@+id/listItem"/>
+            android:layout_below="@+id/listItem"
+            android:layout_marginBottom="40dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewtimkiem"

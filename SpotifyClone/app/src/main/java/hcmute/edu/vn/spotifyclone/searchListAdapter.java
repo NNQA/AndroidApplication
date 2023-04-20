@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -14,8 +15,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import hcmute.edu.vn.spotifyclone.dataAccess.PlaylistDAO;
 import hcmute.edu.vn.spotifyclone.model.Song;
 
 public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.ViewHolder> implements Filterable {
@@ -72,6 +77,34 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
                 navigateSongScreen(song.getSongId());
             }
         });
+        holder.appCompatImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, view);
+                popupMenu.inflate(R.menu.action_song);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.option_1:
+                                // Handle option 1 click
+                                return true;
+                            case R.id.option_2:
+                                // Handle option 2 click
+                                return true;
+                            case R.id.option_3:
+
+
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
     }
 
     @Override
@@ -115,7 +148,8 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView  txtName, txtad;
-        RelativeLayout relativeLayout;
+        RelativeLayout     relativeLayout;
+        AppCompatImageView appCompatImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -123,6 +157,7 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
             imageView = itemView.findViewById(R.id.imageSearch);
             txtName = itemView.findViewById(R.id.titleName);
             txtad = itemView.findViewById(R.id.desciption);
+            appCompatImageView = itemView.findViewById(R.id.action);
         }
     }
     void navigateSongScreen(String songId) {

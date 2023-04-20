@@ -1,24 +1,40 @@
 package hcmute.edu.vn.spotifyclone;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +58,14 @@ public class add_item_playlist extends Fragment {
     View              view;
     TextView          textView;
     EditText editText;
+    Button    uploadImageBtn;
+    private ImageView   mImageView;
+    private Uri mImageUri;
+    int                            SELECT_PICTURE = 200;
+    ActivityResultLauncher<String> m;
+    private StorageReference  mStorageRef;
+
+    PlaylistDAO playlistDAO = new PlaylistDAO();
 
 
 
@@ -98,8 +122,10 @@ public class add_item_playlist extends Fragment {
         view =  inflater.inflate(R.layout.fragment_add_item_playlist, container, false);
         textView = view.findViewById(R.id.addPlaylist);
         editText = view.findViewById(R.id.input);
+
+        uploadImageBtn = view.findViewById(R.id.add_image_btn);
+        mImageView = view.findViewById(R.id.song_image);
         SharedPreferences sharedPreferences=this.getContext().getSharedPreferences("myRef",0);
-        PlaylistDAO playlistDAO = new PlaylistDAO();
         TextView button = view.findViewById(R.id.cancle);
         Context context = this.getActivity();
         button.setOnClickListener(new View.OnClickListener() {
@@ -113,13 +139,34 @@ public class add_item_playlist extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+        m = registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        mImageView.setImageURI(result);
+                        mImageUri = result;
+                    }
+                }
+        );
+        uploadImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m.launch("image/*");
+            }
+        });
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("asd", "onClick: " + sharedPreferences.getString("uid",null) +  " " + editText.getText().toString());
-                String id = UUID.randomUUID().toString();
-                Playlist playlist = new Playlist(id, editText.getText().toString(), sharedPreferences.getString("uid",null),RamdonStringImage() );
-                playlistDAO.addPlaylist(playlist, () -> {
+                uploadFile();
+
+            }
+        });
+        return view;
+    }
+    private void addPlaylist(Playlist playlist) {
+        playlistDAO.addPlaylist(playlist, () -> {
                     Toast.makeText(add_item_playlist.this.getContext(), "Added successfully", Toast.LENGTH_SHORT).show();
                     ListPlayList list = new ListPlayList();
                     FragmentManager fragmentManager = getChildFragmentManager();
@@ -129,9 +176,37 @@ public class add_item_playlist extends Fragment {
                 }, () -> {
                     Toast.makeText(add_item_playlist.this.getContext(), "Added failure", Toast.LENGTH_SHORT).show();
                 });
+    }
+    private void uploadFile() {
+        SharedPreferences sharedPreferences=this.getContext().getSharedPreferences("myRef",0);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        if (mImageUri != null) {
+            StorageReference fileReference = mStorageRef.child( "/uploadImagePlaylist" + mImageUri.getLastPathSegment());
 
-            }
-        });
-        return view;
+            StorageTask<UploadTask.TaskSnapshot> mUploadTask = fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String id = UUID.randomUUID().toString();
+                                    Playlist playlist = new Playlist(id, editText.getText().toString(), sharedPreferences.getString("uid",null),
+                                            uri.toString() );
+                                    addPlaylist(playlist);
+                                }
+                            });
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        } else {
+            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+        }
     }
 }

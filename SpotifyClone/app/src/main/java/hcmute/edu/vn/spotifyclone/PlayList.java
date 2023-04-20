@@ -143,7 +143,7 @@ public class PlayList extends Fragment {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Fragment listPlayList = new ListPlayList();
                 fragmentTransaction.replace(R.id.playlist, listPlayList);
-                fragmentTransaction.commit();
+                fragmentTransaction.addToBackStack(String.valueOf(R.id.listPlayList)).commit();
             }
         });
 
@@ -197,4 +197,5 @@ public class PlayList extends Fragment {
                 })
                 .addOnFailureListener(onFailureListener);
     }
+
 }

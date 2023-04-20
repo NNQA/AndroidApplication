@@ -4,13 +4,14 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/bg1"
-    android:padding="12dp"
+    android:padding="10dp"
     android:id="@+id/itemShow">
     <ImageView
         android:id="@+id/imageSearch"
         android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
         android:src="@drawable/headphone1"
+        android:layout_marginTop="2dp"
         />
 
     <LinearLayout
@@ -21,10 +22,9 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="56dp"
         android:layout_toRightOf="@+id/imageSearch"
-        android:gravity="left|center"
         android:orientation="vertical"
         android:paddingLeft="12dp"
         android:paddingTop="3dp">
@@ -35,13 +35,13 @@
             android:layout_height="wrap_content"
             android:text="ten Bai Hat"
             android:textColor="@color/white"
-            android:textSize="17dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/desciption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ten nghe si"
+            android:text="create by :"
             android:textColor="@color/textSearch"
             android:textSize="14dp" />
     </LinearLayout>
@@ -51,7 +51,7 @@
         android:layout_height="20dp"
         android:src="@drawable/dotsicon"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="12dp"
         ></androidx.appcompat.widget.AppCompatImageView>
     <View
@@ -60,7 +60,7 @@
         android:layout_height="0.5dp"
         android:background="@android:color/white"
         android:layout_below="@+id/grText"
-        android:layout_marginTop="12dp"/>
+        android:layout_marginTop="13dp"/>
 
 
 </RelativeLayout>
