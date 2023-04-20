@@ -3,8 +3,12 @@ package hcmute.edu.vn.spotifyclone;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,8 +16,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -43,9 +49,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,6 +89,8 @@ public class MusicPlay_Activity extends AppCompatActivity {
     private int tempProgress = 1;
     public int totalDuration = 1;
     public int currentProgress = 1;
+    private int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 23;
+
     //
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -118,10 +128,9 @@ public class MusicPlay_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_music_play);
-
 
 
         LocalBroadcastManager.getInstance(this)
@@ -156,6 +165,9 @@ public class MusicPlay_Activity extends AppCompatActivity {
                         return true;
                     case R.id.removeFromPlaylistOption:
                         openRemovePLDialog();
+                        return true;
+                    case R.id.downloadSongOption:
+                        downloadSong(recentSong);
                         return true;
                     default:
                         return false;
@@ -321,7 +333,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     QuerySnapshot querySnapshot = task.getResult();
                                     if (querySnapshot.isEmpty()) {
                                         dao.addSongToPlaylist(mySongId, PLID[0]);
@@ -505,8 +517,8 @@ public class MusicPlay_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, SongService.class);
         intent.putExtra("action_music_service", action);
 
-        if(action == SongService.ACTION_SEND_INFO) {
-            int changeProgress = (totalDuration * tempProgress)/100;
+        if (action == SongService.ACTION_SEND_INFO) {
+            int changeProgress = (totalDuration * tempProgress) / 100;
             intent.putExtra("change_progress", changeProgress);
         }
 
@@ -549,7 +561,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            Log.e("msg", "bundle is null "+isPlaying);
+            Log.e("msg", "bundle is null " + isPlaying);
             setStatusButtonPlay();
             setInformation(recentSong);
             return;
@@ -568,7 +580,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         if (myPlayListId != null) {
             startPlayMusic(myPlayListId, mySongId);
             isPlaySingle = false;
-        } else if(myPlayListId == null && mySongId != null){
+        } else if (myPlayListId == null && mySongId != null) {
             isPlaySingle = true;
             startPlayMusic(myPlayListId, mySongId);
         } else {
@@ -584,5 +596,29 @@ public class MusicPlay_Activity extends AppCompatActivity {
         MainActivity.isPlaying = isPlaying;
         finish();
         super.onBackPressed();
+    }
+
+    public void downloadSong(Song song) {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Request permission if it has not been granted yet
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_WRITE_EXTERNAL_STORAGE);
+        } else {
+            String externalStoragePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            String fileName = externalStoragePath + File.separator + song.getSongName() + ".mp3";
+            File localFile = new File(fileName);
+            StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(song.getSource());
+
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Log.d("file", "download file " + fileName);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("file", "download fail");
+                }
+            });
+        }
     }
 }
