@@ -53,8 +53,8 @@ public class MusicPlay_Activity extends AppCompatActivity {
     //    Object and Attribute
     public String mySongId = "abc";
     public static Song recentSong;
+    public String myPlayListId = "abc";
     public List<Song> recentPlaylist = new ArrayList<>();
-    public int indexSong =0;
     public boolean isPlaying = true;
     public boolean isServiceRunning = true;
     public int totalDuration = 1;
@@ -70,6 +70,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
             isPlaying = bundle.getBoolean("status_player");
             int musicAction = bundle.getInt("action_music");
+            recentSong = (Song) bundle.getSerializable("object_song");
 
             handleMusicAction(musicAction);
         }
@@ -96,14 +97,6 @@ public class MusicPlay_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_play);
 
-//        ArrayList<Song> songList = (ArrayList<Song>) getIntent().getSerializableExtra("songList");
-//        if(songList != null) {
-//            songList.forEach((e) -> {
-//                Log.d("asd", "onSuccess: " + e.getSongName());
-//            });
-//        } else {
-//            Log.d("asdasd", "onCreate: asdasd");
-//        }
 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver, new IntentFilter("send_action_to_act"));
@@ -138,7 +131,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
             @NonNull
             @Override
             public String getFormattedValue(float value) {
-                String myLabel = convertToTime(currentProgress)+" / "+convertToTime(totalDuration);
+                String myLabel = convertToTime(currentProgress) + " / " + convertToTime(totalDuration);
                 return myLabel;
             }
         });
@@ -161,7 +154,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
                     }
                 } else {
                     isPlaying = true;
-                    startPlayMusic(mySongId);
+                    startPlayMusic(myPlayListId, mySongId);
                 }
 
             }
@@ -191,40 +184,56 @@ public class MusicPlay_Activity extends AppCompatActivity {
     }
 
 
-    public void startPlayMusic(String mSongId) {
-//        db.collection("songs").document(mSongId)
-//                .get()
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        Song song = documentSnapshot.toObject(Song.class);
-//                        recentSong = song;
-//                        setInformation(song);
-//                        startService(song);
-//                        isServiceRunning = true;
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.e("failed", "error ");
-//                    }
-//                });
+    public void startPlayMusic(String mPlayListId, String mSongId) {
 
-        db.collection("songs")
-                .get()
+        db.collection("playlist_song").whereEqualTo("playlistId", mPlayListId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Song song = document.toObject(Song.class);
-                                recentPlaylist.add(song);
+
+                        List<String> tempSongId = new ArrayList<>();
+
+                        QuerySnapshot myQuery = task.getResult();
+                        if (myQuery.isEmpty()) {
+                            tempSongId.add(mSongId);
+                        } else {
+                            for (QueryDocumentSnapshot document : myQuery) {
+                                String tempId = document.getString("songId");
+                                tempSongId.add(tempId);
                             }
-                            recentSong = recentPlaylist.get(indexSong);
-                            setInformation(recentSong);
-                            startService(recentSong);
-                            isServiceRunning = true;
                         }
+                        
+                        db.collection("songs").whereIn("songId", tempSongId).get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task1) {
+                                        if (task1.isSuccessful()) {
+                                            List<DocumentSnapshot> tmpDocuments = task1.getResult().getDocuments();
+                                            for (DocumentSnapshot abc : tmpDocuments) {
+                                                Song sx = abc.toObject(Song.class);
+                                                recentPlaylist.add(sx);
+                                            }
+                                            if (mSongId != null) {
+                                                Log.e("er", "null");
+                                                for (Song song : recentPlaylist){
+                                                    if (song.getSongId().equals(mSongId)){
+                                                        recentSong = song;
+                                                        break;
+                                                    }
+                                                }
+                                                setInformation(recentSong);
+                                                startMyService(recentPlaylist, recentSong);
+                                                isServiceRunning = true;
+
+                                            } else {
+                                                recentSong = recentPlaylist.get(0);
+                                                setInformation(recentSong);
+                                                startMyService(recentPlaylist, recentSong);
+                                                isServiceRunning = true;
+                                            }
+                                        }
+                                    }
+                                });
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -252,9 +261,10 @@ public class MusicPlay_Activity extends AppCompatActivity {
                 });
     }
 
-    public void startService(Song msong) {
+    public void startMyService(List<Song> mlistsong, Song msong) {
         Intent intent = new Intent(this, SongService.class);
         Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("object_list_song", new ArrayList<>(mlistsong));
         bundle.putSerializable("object_song", msong);
         intent.putExtras(bundle);
 
@@ -291,12 +301,10 @@ public class MusicPlay_Activity extends AppCompatActivity {
                 isServiceRunning = false;
                 break;
             case SongService.ACTION_NEXT:
-                Log.e("abc", "next");
-                btnNextClick();
+                setInformation(recentSong);
                 break;
             case SongService.ACTION_PREVIOUS:
-                Log.e("abc", "prev");
-                btnPrevClick();
+                setInformation(recentSong);
                 break;
         }
     }
@@ -316,29 +324,20 @@ public class MusicPlay_Activity extends AppCompatActivity {
     }
 
     public String convertToTime(int myTime) {
-        int b = myTime/1000;
-        int x =b/60;
-        int y = b%60;
-        return (x+":"+y);
+        int b = myTime / 1000;
+        int x = b / 60;
+        int y = b % 60;
+        return (x + ":" + y);
     }
 
-    public void btnNextClick(){
-        if (indexSong+1 < recentPlaylist.size() ){
-            indexSong++;
-            recentSong = recentPlaylist.get(indexSong);
-            setInformation(recentSong);
-            startService(recentSong);
-        }
+    public void btnNextClick() {
+        sendActToService(SongService.ACTION_NEXT);
     }
 
-    public void btnPrevClick(){
-        if (indexSong-1 >= 0 ){
-            indexSong--;
-            recentSong = recentPlaylist.get(indexSong);
-            setInformation(recentSong);
-            startService(recentSong);
-        }
+    public void btnPrevClick() {
+        sendActToService(SongService.ACTION_PREVIOUS);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -349,16 +348,29 @@ public class MusicPlay_Activity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        mySongId = "1q4TGECGjQliuz1q8K4f";
-        mySongId = getIntent().getStringExtra("sondId");
 
-        if (mySongId != null) {
-            startPlayMusic(mySongId);
-        } else {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            Log.e("msg", "bundle is null");
+            return;
+        }
+        myPlayListId = bundle.getString("PlaylistIDintent");
+        mySongId = bundle.getString("sondId");
+
+//        if (mySongId != null) {
+//            startPlayMusic(myPlayListId, mySongId);
+//        } else {
 //            mySongId = getIntent().getStringExtra("sondIdFromService");
 //            mySongId = getIntent().getStringExtra("PlaylistIDintent");
 //            startWhenMusicIsPlaying(mySongId);
+//        }
+
+        if (myPlayListId != null) {
+            startPlayMusic(myPlayListId, mySongId);
+        } else {
+            startPlayMusic(myPlayListId, mySongId);
         }
+
     }
 
     @Override

@@ -48,6 +48,7 @@ public class SongService extends Service {
     private boolean isPlaying = false;
     private Song recentSong;
     private List<Song> recentPlaylist = new ArrayList<>();
+    public int indexSong = 0;
     public int totalDuration = 1;
     private int currentProgress = 1;
     RemoteViews remoteViews;
@@ -72,12 +73,37 @@ public class SongService extends Service {
         Bundle bundle = intent.getExtras();
         if(bundle != null) {
             Song song = (Song) bundle.get("object_song");
+            List<Song> listSong = bundle.getParcelableArrayList("object_list_song");
 
-            if(song != null) {
+            if(song != null && listSong != null) {
                 recentSong = song;
+                recentPlaylist = listSong;
+
+                indexSong = 0;
+                for (Song temp : recentPlaylist) {
+                    if (recentSong.getSongId().equals(temp.getSongId())){
+                        break;
+                    }
+                    indexSong++;
+                }
+
                 isPlaying = true;
-                runMusic(song);
-                sendNotification(song);
+                runMusic(recentSong);
+                sendNotification(recentSong);
+            } else if (song == null && listSong != null){
+
+                recentPlaylist = listSong;
+                indexSong = 0;
+                recentSong = recentPlaylist.get(indexSong);
+
+//                recentSong = song;
+//                isPlaying = true;
+//                runMusic(song);
+//                sendNotification(song);
+
+                isPlaying = true;
+                runMusic(recentSong);
+                sendNotification(recentSong);
             }
         }
 
@@ -143,11 +169,29 @@ public class SongService extends Service {
                 sendActionToActivity(ACTION_CLEAR);
                 break;
             case ACTION_NEXT:
+                nextMusic();
                 sendActionToActivity(ACTION_NEXT);
                 break;
             case ACTION_PREVIOUS:
+                previousMusic();
                 sendActionToActivity(ACTION_PREVIOUS);
                 break;
+        }
+    }
+
+    private void previousMusic() {
+        if(indexSong - 1 >= 0) {
+            indexSong --;
+            recentSong = recentPlaylist.get(indexSong);
+            runMusic(recentSong);
+        }
+    }
+
+    private void nextMusic() {
+        if (indexSong + 1 < recentPlaylist.size()){
+            indexSong++;
+            recentSong = recentPlaylist.get(indexSong);
+            runMusic(recentSong);
         }
     }
 

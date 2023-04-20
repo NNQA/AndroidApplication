@@ -3,6 +3,7 @@ package hcmute.edu.vn.spotifyclone;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -73,6 +74,16 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
 
             }
         });
+
+        holder.play_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                navigateSongScreen(song.getSongId());
+
+            }
+        });
+
     }
 
     @NonNull
@@ -89,6 +100,7 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
         public TextView song_singer;
         public LinearLayout song_item_view;
         public ImageView download_song_btn;
+        public ImageView play_btn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -96,6 +108,7 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
             song_name = itemView.findViewById(R.id.ln_song_name);
             song_singer = itemView.findViewById(R.id.ln_song_singer);
             download_song_btn = itemView.findViewById(R.id.download_song_btn);
+            play_btn = itemView.findViewById(R.id.play_btn);
         }
     }
 
@@ -123,5 +136,9 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
         }
         }
 
-
+    void navigateSongScreen(String songId) {
+        Intent intent = new Intent(context,MusicPlay_Activity.class);
+        intent.putExtra("sondId",songId);
+        context.startActivity(intent);
+    }
 }

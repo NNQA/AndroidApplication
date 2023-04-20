@@ -1,8 +1,13 @@
 package hcmute.edu.vn.spotifyclone.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
-public class Song implements Serializable {
+public class Song implements Serializable, Parcelable {
     public String songId;
     public String songName;
     public String singer;
@@ -23,6 +28,27 @@ public class Song implements Serializable {
         this.source = source;
         this.uploader = uploader;
     }
+
+    protected Song(Parcel in) {
+        songId = in.readString();
+        songName = in.readString();
+        singer = in.readString();
+        image = in.readString();
+        source = in.readString();
+        uploader = in.readString();
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public String getSongId() {
         return songId;
@@ -70,5 +96,20 @@ public class Song implements Serializable {
 
     public void setUploader(String uploader) {
         this.uploader = uploader;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(songId);
+        parcel.writeString(songName);
+        parcel.writeString(singer);
+        parcel.writeString(image);
+        parcel.writeString(source);
+        parcel.writeString(uploader);
     }
 }
