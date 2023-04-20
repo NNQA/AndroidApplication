@@ -40,6 +40,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.129" />
 
+    <TextView
+        android:id="@+id/songTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:includeFontPadding="false"
+        android:gravity="right"
+        android:paddingRight="7dp"
+        android:text="0:00 / 0:00"
+        android:textColor="#ffffff"
+        android:textSize="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.805" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/songImage"
         android:layout_width="350dp"
@@ -56,7 +74,7 @@
 
     <com.google.android.material.slider.Slider
         android:id="@+id/songVolume"
-        android:layout_width="355dp"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:contentDescription="Volume"
         android:valueFrom="0.0f"

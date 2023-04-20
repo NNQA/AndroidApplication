@@ -56,7 +56,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
     //  Component
     MaterialButton btnPlay, btnMore, btnNext, btnPrev, btnMinimize;
-    TextView songTitle, songDescription;
+    TextView songTitle, songDescription, songTime;
     ShapeableImageView songImg;
     Slider slider;
     //    dialog component
@@ -76,6 +76,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
     public boolean isPlaying = true;
     public boolean isServiceRunning = true;
     public boolean isPlaySingle = false;
+    private int tempProgress = 1;
     public int totalDuration = 1;
     public int currentProgress = 1;
     //
@@ -132,6 +133,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         btnMinimize = findViewById(R.id.btnMinimize);
         songTitle = findViewById(R.id.songTitle);
         songDescription = findViewById(R.id.songDescription);
+        songTime = findViewById(R.id.songTime);
         songImg = findViewById(R.id.songImage);
         slider = findViewById(R.id.songVolume);
 
@@ -162,6 +164,24 @@ public class MusicPlay_Activity extends AppCompatActivity {
             public String getFormattedValue(float value) {
                 String myLabel = convertToTime(currentProgress) + " / " + convertToTime(totalDuration);
                 return myLabel;
+            }
+        });
+
+        slider.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                tempProgress = (int) value;
+            }
+        });
+        slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+                slider.setValue(tempProgress);
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+                sendActToService(SongService.ACTION_SEND_INFO);
             }
         });
 
@@ -479,6 +499,11 @@ public class MusicPlay_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, SongService.class);
         intent.putExtra("action_music_service", action);
 
+        if(action == SongService.ACTION_SEND_INFO) {
+            int changeProgress = (totalDuration * tempProgress)/100;
+            intent.putExtra("change_progress", changeProgress);
+        }
+
         startService(intent);
     }
 
@@ -487,6 +512,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         float b = (float) totalDuration;
         float percent = (a / b) * 100;
         slider.setValue(percent);
+        songTime.setText(convertToTime(currentProgress) + " / " + convertToTime(totalDuration));
     }
 
     public String convertToTime(int myTime) {

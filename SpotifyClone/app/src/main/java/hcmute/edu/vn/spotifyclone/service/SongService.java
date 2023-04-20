@@ -51,6 +51,7 @@ public class SongService extends Service {
     public int indexSong = 0;
     public int totalDuration = 1;
     private int currentProgress = 1;
+    private int nextProgress = 1;
     RemoteViews remoteViews;
     private Handler mHandler;
 
@@ -108,6 +109,9 @@ public class SongService extends Service {
         }
 
         int musicAction = intent.getIntExtra("action_music_service", 0);
+        if (musicAction == ACTION_SEND_INFO) {
+            nextProgress = intent.getIntExtra("change_progress", 0);
+        }
         handleMusicAction(musicAction);
 
         mHandler = new Handler();
@@ -146,6 +150,14 @@ public class SongService extends Service {
             throw new RuntimeException(e);
         }
 
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                nextMusic();
+                sendActionToActivity(ACTION_NEXT);
+            }
+        });
+
         mediaPlayer.prepareAsync();
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -175,6 +187,11 @@ public class SongService extends Service {
             case ACTION_PREVIOUS:
                 previousMusic();
                 sendActionToActivity(ACTION_PREVIOUS);
+                break;
+            case ACTION_SEND_INFO:
+                if (mediaPlayer != null){
+                    mediaPlayer.seekTo(nextProgress);
+                }
                 break;
         }
     }
