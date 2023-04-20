@@ -12,7 +12,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_back_24px"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <RelativeLayout
             android:id="@+id/gr"
             android:layout_width="match_parent"
@@ -61,8 +69,8 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="12dp"
-            android:background="@color/white"
-            android:src="@drawable/play"
+
+            android:src="@drawable/play_arrow_48px"
             android:layout_below="@+id/Text"
             android:layout_alignParentEnd="true"/>
         <ImageView
@@ -76,7 +84,7 @@
             android:src="@drawable/shuffle_48px"
             android:layout_below="@+id/Text"
             android:layout_toLeftOf="@+id/iconPlay"
-            android:background="@color/white"/>
+       />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/icon3Dots"

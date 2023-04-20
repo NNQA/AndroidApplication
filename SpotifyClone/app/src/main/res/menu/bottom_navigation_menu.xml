@@ -16,7 +16,7 @@
         android:id="@+id/navigation_library"
         android:enabled="true"
         android:icon="@drawable/overview_key_24px"
-        android:title="Library"/>
+        android:title="Playlist"/>
     <item
         android:id="@+id/navigation_profile"
         android:enabled="true"
