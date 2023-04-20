@@ -5,16 +5,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -24,9 +32,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -37,6 +47,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import hcmute.edu.vn.spotifyclone.dataAccess.Playlist_songDAO;
+import hcmute.edu.vn.spotifyclone.model.Playlist;
 import hcmute.edu.vn.spotifyclone.model.Song;
 import hcmute.edu.vn.spotifyclone.service.SongService;
 
@@ -47,7 +59,13 @@ public class MusicPlay_Activity extends AppCompatActivity {
     TextView songTitle, songDescription;
     ShapeableImageView songImg;
     Slider slider;
+    //    dialog component
+    MaterialButton cancelBtnDialog, okBtnDialog;
+    TextInputLayout textInputLayout;
+    AutoCompleteTextView autoCompleteTextView;
+    Dialog dialog;
 
+    //    Firebase component
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
     //    Object and Attribute
@@ -57,6 +75,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
     public List<Song> recentPlaylist = new ArrayList<>();
     public boolean isPlaying = true;
     public boolean isServiceRunning = true;
+    public boolean isPlaySingle = false;
     public int totalDuration = 1;
     public int currentProgress = 1;
     //
@@ -122,8 +141,18 @@ public class MusicPlay_Activity extends AppCompatActivity {
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                // Handle menu item click event here
-                return true;
+                int itemId = item.getItemId();
+                switch (itemId) {
+                    case R.id.addToPlaylistOption:
+                        openChoosePLDialog();
+                        return true;
+                    case R.id.removeFromPlaylistOption:
+                        openRemovePLDialog();
+                        return true;
+                    default:
+                        return false;
+                }
+
             }
         });
 
@@ -183,6 +212,143 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
     }
 
+    private void openChoosePLDialog() {
+        List<String> myIdList = new ArrayList<>();
+        List<String> myNamelist = new ArrayList<>();
+
+        SharedPreferences sharedPreferences = this.getApplicationContext().getSharedPreferences("myRef", 0);
+
+        db.collection("playlist")
+                .whereEqualTo("authId", sharedPreferences.getString("uid", null))
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            String IdList = documentSnapshot.getString("playlistId");
+                            String nameList = documentSnapshot.getString("playListName");
+                            myNamelist.add(nameList);
+                            myIdList.add(IdList);
+                        }
+                        createPLDialog(myIdList, myNamelist);
+                    }
+                });
+    }
+
+    private void openRemovePLDialog() {
+        if (isPlaySingle == true) {
+            openNoticeDialog("This song is not played from a playlist!");
+        } else {
+            Playlist_songDAO dao = new Playlist_songDAO();
+            dao.removeSongFromPlaylist(mySongId, myPlayListId);
+            openNoticeDialog("Remove completed!");
+        }
+    }
+
+    public void openNoticeDialog(String msg) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setCancelable(false)
+                .setTitle("Notice")
+                .setIcon(R.drawable.icon_in4)
+                .setMessage(msg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void createPLDialog(List<String> myIdList, List<String> myList) {
+
+        final String[] PLID = new String[1];
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_choose_playlist, null);
+        textInputLayout = dialogView.findViewById(R.id.menuChoose);
+        autoCompleteTextView = dialogView.findViewById(R.id.drop_item);
+        cancelBtnDialog = dialogView.findViewById(R.id.cancelBtnDialog);
+        okBtnDialog = dialogView.findViewById(R.id.okBtnDialog);
+
+        okBtnDialog.setBackgroundColor(Color.parseColor("#C0C0C0"));
+        cancelBtnDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        okBtnDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Playlist_songDAO dao = new Playlist_songDAO();
+
+                db.collection("playlist_song").whereEqualTo("playlistId", PLID[0])
+                        .whereEqualTo("songId", mySongId)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()){
+                                    QuerySnapshot querySnapshot = task.getResult();
+                                    if (querySnapshot.isEmpty()) {
+                                        dao.addSongToPlaylist(mySongId, PLID[0]);
+                                        dialog.dismiss();
+                                        openNoticeDialog("Add song successfully!!!");
+                                    } else {
+                                        openNoticeDialog("This song has been already exist in this playlist!");
+                                    }
+                                }
+                            }
+                        });
+            }
+        });
+
+        ArrayAdapter<String> itemAdapter =
+                new ArrayAdapter<>(MusicPlay_Activity.this, R.layout.item_list, myList);
+
+        autoCompleteTextView.setAdapter(itemAdapter);
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                PLID[0] = myIdList.get(i);
+                okBtnDialog.setEnabled(true);
+                okBtnDialog.setBackgroundColor(Color.parseColor("#33FF33"));
+            }
+        });
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setCancelable(false)
+                .setTitle("Choose Playlist")
+                .setView(dialogView);
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    public void openProgressDialog() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.processing_dialog_layout, null);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setCancelable(false)
+                .setTitle("Processing...")
+                .setMessage("This may take a while...")
+                .setView(dialogView);
+
+        dialog = builder.create();
+        dialog.show();
+    }
+
+    ;
+
 
     public void startPlayMusic(String mPlayListId, String mSongId) {
 
@@ -202,7 +368,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
                                 tempSongId.add(tempId);
                             }
                         }
-                        
+
                         db.collection("songs").whereIn("songId", tempSongId).get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -215,8 +381,8 @@ public class MusicPlay_Activity extends AppCompatActivity {
                                             }
                                             if (mSongId != null) {
                                                 Log.e("er", "null");
-                                                for (Song song : recentPlaylist){
-                                                    if (song.getSongId().equals(mSongId)){
+                                                for (Song song : recentPlaylist) {
+                                                    if (song.getSongId().equals(mSongId)) {
                                                         recentSong = song;
                                                         break;
                                                     }
@@ -367,7 +533,9 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
         if (myPlayListId != null) {
             startPlayMusic(myPlayListId, mySongId);
+            isPlaySingle = false;
         } else {
+            isPlaySingle = true;
             startPlayMusic(myPlayListId, mySongId);
         }
 

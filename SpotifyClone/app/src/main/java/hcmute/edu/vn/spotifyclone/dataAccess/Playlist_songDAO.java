@@ -6,11 +6,13 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,24 +66,17 @@ public class Playlist_songDAO {
 
     public void removeSongFromPlaylist(String songId, String playlistId){
 
-        Query query = database.collection("playlist_song")
+        database.collection("playlist_song")
+                .whereEqualTo("playlistId", playlistId)
                 .whereEqualTo("songId", songId)
-                .whereEqualTo("playlistId", playlistId);
-
-
-        query.get().addOnSuccessListener(querySnapshot -> {
-            for (QueryDocumentSnapshot document : querySnapshot) {
-                // Xoá từng tài liệu tương ứng
-                database.collection("playlist_song").document(document.getId()).delete()
-                        .addOnSuccessListener(aVoid -> {
-                            Log.e("Success", "Remove song succeed");
-                        })
-                        .addOnFailureListener(e -> {
-                            Log.e("Failure", "Remove song failed");
-                        });
-            }
-        }).addOnFailureListener(e -> {
-            Log.e("Error", "An error occur when get document");
-        });
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            documentSnapshot.getReference().delete();
+                        }
+                    }
+                });
     }
 }
