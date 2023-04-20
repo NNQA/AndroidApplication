@@ -73,9 +73,9 @@ public class MusicPlay_Activity extends AppCompatActivity {
     public static Song recentSong;
     public String myPlayListId = "abc";
     public List<Song> recentPlaylist = new ArrayList<>();
-    public boolean isPlaying = true;
-    public boolean isServiceRunning = true;
-    public boolean isPlaySingle = false;
+    public static boolean isPlaying = true;
+    public static boolean isServiceRunning = true;
+    public static boolean isPlaySingle = false;
     private int tempProgress = 1;
     public int totalDuration = 1;
     public int currentProgress = 1;
@@ -463,7 +463,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         songDescription.setText(song.getSinger());
         String imgUrl = song.getImage();
         Glide.with(getApplicationContext()).load(imgUrl).into(songImg);
-        btnPlay.setIconResource(R.drawable.button_pause);
+        setStatusButtonPlay();
     }
 
     public void setStatusButtonPlay() {
@@ -543,7 +543,9 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            Log.e("msg", "bundle is null");
+            Log.e("msg", "bundle is null "+isPlaying);
+            setStatusButtonPlay();
+            setInformation(recentSong);
             return;
         }
         myPlayListId = bundle.getString("PlaylistIDintent");
@@ -560,9 +562,11 @@ public class MusicPlay_Activity extends AppCompatActivity {
         if (myPlayListId != null) {
             startPlayMusic(myPlayListId, mySongId);
             isPlaySingle = false;
-        } else {
+        } else if(myPlayListId == null && mySongId != null){
             isPlaySingle = true;
             startPlayMusic(myPlayListId, mySongId);
+        } else {
+
         }
 
     }
@@ -571,6 +575,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
     public void onBackPressed() {
         MainActivity.status_player = true;
         MainActivity.recentSong = recentSong;
+        MainActivity.isPlaying = isPlaying;
         finish();
         super.onBackPressed();
     }

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout smallPlayer;
 //    Variable
     public static boolean status_player = false;
-    public boolean isPlaying = true;
+    public static boolean isPlaying = true;
     public boolean isServiceRunning = true;
     public static Song recentSong;
     public String mySongId = "";
@@ -168,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
         smallPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getApplicationContext(), MusicPlay_Activity.class);
+                getApplicationContext().startActivity(intent);
             }
         });
 
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         if(status_player == true) {
             smallPlayer.setVisibility(View.VISIBLE);
             setInfomation(recentSong);
+            setStatusButtonPlay();
         }
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
