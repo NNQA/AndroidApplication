@@ -2,7 +2,9 @@ package hcmute.edu.vn.spotifyclone;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +28,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -40,6 +44,7 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
 
     private Context context;
     private int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 23;
+    Dialog dialog;
 
 
     public LinearSongAdapter(@NonNull FirestoreRecyclerOptions<Song> options, Context context) {
@@ -125,6 +130,9 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
             storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(context, "Download success!!!",
+                            Toast.LENGTH_LONG).show();
+                    openNoticeDialog("Download OK");
                     Log.d("file","download file " + fileName);
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -140,5 +148,23 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
         Intent intent = new Intent(context,MusicPlay_Activity.class);
         intent.putExtra("sondId",songId);
         context.startActivity(intent);
+    }
+    public void openNoticeDialog(String msg) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
+                .setCancelable(false)
+                .setTitle("Notice")
+                .setIcon(R.drawable.icon_in4)
+                .setMessage(msg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
     }
 }
