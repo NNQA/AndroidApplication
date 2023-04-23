@@ -1,6 +1,8 @@
 package hcmute.edu.vn.spotifyclone;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -32,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hcmute.edu.vn.spotifyclone.dataAccess.PlaylistDAO;
+import hcmute.edu.vn.spotifyclone.dataAccess.Playlist_songDAO;
 import hcmute.edu.vn.spotifyclone.model.Song;
 
 public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.ViewHolder> implements Filterable {
@@ -40,6 +44,7 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
     private List<Song> mlsongOld;
     private Context        context;
     String playlistId;
+    Dialog dialog ;
     public searchListAdapter(Context context,List<Song> mluser) {
         this.mlsong = mluser;
         this.mlsongOld = mluser;
@@ -80,28 +85,34 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
         holder.appCompatImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(context, view);
-                popupMenu.inflate(R.menu.action_song);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.option_1:
-                                // Handle option 1 click
-                                return true;
-                            case R.id.option_2:
-                                // Handle option 2 click
-                                return true;
-                            case R.id.option_3:
-
-
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
-                popupMenu.show();
+                Playlist_songDAO dao = new Playlist_songDAO();
+                dao.removeSongFromPlaylist(song.getSongId(), playlistId);
+                openNoticeDialog("Remove success!!!");
+                int temp = position;
+                mlsong.remove(temp);
+                notifyItemRemoved(temp);
+//                PopupMenu popupMenu = new PopupMenu(context, view);
+//                popupMenu.inflate(R.menu.action_song);
+//                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem menuItem) {
+//                        switch (menuItem.getItemId()) {
+//                            case R.id.option_1:
+//                                // Handle option 1 click
+//                                return true;
+//                            case R.id.option_2:
+//                                // Handle option 2 click
+//                                return true;
+//                            case R.id.option_3:
+//
+//
+//                                return true;
+//                            default:
+//                                return false;
+//                        }
+//                    }
+//                });
+//                popupMenu.show();
 
             }
         });
@@ -169,5 +180,24 @@ public class searchListAdapter extends RecyclerView.Adapter<searchListAdapter.Vi
         intent.putExtras(bundle);
         context.startActivity(intent);
         Log.d("id", "navigateSongScreen: " + playlistId + "/"+songId);
+    }
+
+    public void openNoticeDialog(String msg) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
+                .setCancelable(false)
+                .setTitle("Notice")
+                .setIcon(R.drawable.icon_in4)
+                .setMessage(msg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+
+        dialog = builder.create();
+        dialog.show();
     }
 }
