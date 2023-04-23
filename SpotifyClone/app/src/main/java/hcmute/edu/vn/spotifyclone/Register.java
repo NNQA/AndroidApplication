@@ -3,8 +3,10 @@ package hcmute.edu.vn.spotifyclone;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +32,7 @@ public class Register extends AppCompatActivity {
     private EditText rePassword;
 
     private Button gobackLogin;
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +88,12 @@ public class Register extends AppCompatActivity {
                             Log.d("Register", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                            openDialog();
                             user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+                                        dialog.dismiss();
                                         Toast.makeText(getApplicationContext(),"SignUp Success",Toast.LENGTH_SHORT).show();
                                         onBackPressed();
                                     }
@@ -99,5 +105,19 @@ public class Register extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void openDialog(){
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.processing_dialog_layout, null);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
+                .setCancelable(false)
+                .setTitle("Processing...")
+                .setMessage("This may take some time, please wait for a while")
+                .setView(dialogView);
+
+        dialog = builder.create();
+        dialog.show();
     }
 }
