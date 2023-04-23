@@ -561,13 +561,15 @@ public class MusicPlay_Activity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
-            Log.e("msg", "bundle is null " + isPlaying);
+            isPlaying = MainActivity.isPlaying;
+//            Log.e("msg", "bundle is null " + isPlaying);
             setStatusButtonPlay();
             setInformation(recentSong);
             return;
         }
         myPlayListId = bundle.getString("PlaylistIDintent");
         mySongId = bundle.getString("sondId");
+        isPlaying = true;
 
 //        if (mySongId != null) {
 //            startPlayMusic(myPlayListId, mySongId);
