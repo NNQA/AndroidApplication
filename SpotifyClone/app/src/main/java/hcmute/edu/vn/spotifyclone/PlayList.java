@@ -20,8 +20,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -102,11 +104,15 @@ public class PlayList extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerviewtimkiem);
         textView = view.findViewById(R.id.namePlayList);
         TextView name = view.findViewById(R.id.nameUser);
+        ImageView image = view.findViewById(R.id.image);
+
         linearLayout = new LinearLayoutManager(this.getActivity());
         recyclerView.setLayoutManager(linearLayout);
         playlistId = getArguments().getString("playlistId");
         String playlistName = getArguments().getString("playlistName");
-        TextView button = view.findViewById(R.id.back);
+        String playlistImage = getArguments().getString("playlistImage");
+        Glide.with(getContext()).load(playlistImage).into(image);
+        ImageView button = view.findViewById(R.id.backTo);
         textView.setText(playlistName);
         Log.d("TAG", "Error getting playlists: " + playlistId);
         List<Song> songList = new ArrayList<>();
@@ -147,7 +153,7 @@ public class PlayList extends Fragment {
             }
         });
 
-        ShapeableImageView play = view.findViewById(R.id.iconPlay);
+        ImageView play = view.findViewById(R.id.iconPlay);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

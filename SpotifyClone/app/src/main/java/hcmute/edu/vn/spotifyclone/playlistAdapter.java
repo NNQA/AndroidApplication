@@ -102,6 +102,7 @@ public class playlistAdapter extends RecyclerView.Adapter<playlistAdapter.ViewHo
                 Bundle args = new Bundle();
                 args.putString("playlistId", playlist.getPlaylistId());
                 args.putString("playlistName", playlist.getPlayListName());
+                args.putString("playlistImage", playlist.getImage());
                 playListFr.setArguments(args);
                 FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

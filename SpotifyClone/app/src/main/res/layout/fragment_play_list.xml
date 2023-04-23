@@ -7,115 +7,141 @@
     tools:context=".PlayList"
     android:background="@color/bg1"
     android:id="@+id/playlist">
-
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingTop="30dp">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/backTo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
                 android:src="@drawable/arrow_back_24px"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:src="@drawable/blank_image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <RelativeLayout
+            android:layout_below="@+id/constraintLayout"
             android:id="@+id/gr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
         <LinearLayout
             android:id="@+id/grText"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="12dp">
-
             <TextView
                 android:id="@+id/namePlayList"
-                style="@style/whiteH2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My Playlist #1" />
+                android:layout_marginTop="10dp"
+                android:text="My Playlist Name"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/nameUser"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NameUser"
-                android:textColor="@color/white" />
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Creator: "
+                    android:textColor="#ccc"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/nameUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bao Nguyen"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </LinearLayout>
 
         </LinearLayout>
-            <TextView
-                android:id="@+id/back"
+
+    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_below="@+id/gr"
+            android:padding="5dp"
+            >
+
+            <ImageView
+                android:id="@+id/iconShuffle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="75dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/shuffle_48px" />
+
+            <ImageView
+                android:id="@+id/iconPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Back"
-                android:textColor="@color/white"
-                android:textSize="20dp"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/rounded_with_maincolor"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="12dp"
-                android:layout_marginRight="32dp"
-                />
-    </RelativeLayout>
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iconPlay"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="12dp"
-
-            android:src="@drawable/play_arrow_48px"
-            android:layout_below="@+id/Text"
-            android:layout_alignParentEnd="true"/>
-        <ImageView
-            android:id="@+id/iconShuffle"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="12dp"
-            android:src="@drawable/shuffle_48px"
-            android:layout_below="@+id/Text"
-            android:layout_toLeftOf="@+id/iconPlay"
-       />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/icon3Dots"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_below="@+id/Text"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
-            android:src="@drawable/dotsicon"
-            app:shapeAppearanceOverlay="@style/roundediconPlayList" />
-
-
-        <TextView
-            android:id="@+id/Text"
-            android:layout_width="wrap_content"
+                android:src="@drawable/play_arrow_fill_40px" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/gr"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="7dp"
-            android:text="Play songs in your playlist"
-            android:textColor="@color/white"
-            android:textSize="18dp"></TextView>
+            android:layout_below="@+id/linearLayout3"
+            android:gravity="center_horizontal"
+            android:id="@+id/back">
+            <Button
+                android:id="@+id/backtoLogin"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add to this play list"
+                android:textColor="#d7d7d7"
+                android:textSize="15dp"
+                android:gravity="center_horizontal"
+                app:shapeAppearanceOverlay="@style/roundedButton"
+                app:strokeColor="#3a3a3c"
+                app:strokeWidth="3dp" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewtimkiem"
             android:layout_width="match_parent"
             android:layout_height="533dp"
-            android:layout_below="@+id/iconPlay"
+            android:layout_below="@+id/back"
             android:layout_marginTop="49dp"
             android:background="@color/bg1"
             android:visibility="visible"
