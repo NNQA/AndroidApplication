@@ -569,6 +569,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
         }
         myPlayListId = bundle.getString("PlaylistIDintent");
         mySongId = bundle.getString("sondId");
+        isPlaying = true;
 
 //        if (mySongId != null) {
 //            startPlayMusic(myPlayListId, mySongId);
