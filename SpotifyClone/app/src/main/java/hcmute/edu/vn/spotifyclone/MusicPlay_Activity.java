@@ -340,6 +340,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
                                         dialog.dismiss();
                                         openNoticeDialog("Add song successfully!!!");
                                     } else {
+                                        dialog.dismiss();
                                         openNoticeDialog("This song has been already exist in this playlist!");
                                     }
                                 }
