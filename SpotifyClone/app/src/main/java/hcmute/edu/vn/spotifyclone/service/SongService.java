@@ -240,7 +240,7 @@ public class SongService extends Service {
         Intent intent = new Intent(this, MusicPlay_Activity.class);
         intent.putExtra("sondIdFromService", song.getSongId());
         PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE);
 
 
         remoteViews.setTextViewText(R.id.tvTitleSong, song.getSongName());
@@ -281,7 +281,7 @@ public class SongService extends Service {
         Intent intent = new Intent(this, MyReceiver.class);
         intent.putExtra("action_music", action);
 
-        return PendingIntent.getBroadcast(context.getApplicationContext(), action, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(context.getApplicationContext(), action, intent, PendingIntent.FLAG_MUTABLE);
     }
 
     @Override

@@ -409,33 +409,31 @@ public class MusicPlay_Activity extends AppCompatActivity {
                         }
 
                         db.collection("songs").whereIn("songId", tempSongId).get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task1) {
-                                        if (task1.isSuccessful()) {
-                                            List<DocumentSnapshot> tmpDocuments = task1.getResult().getDocuments();
-                                            for (DocumentSnapshot abc : tmpDocuments) {
-                                                Song sx = abc.toObject(Song.class);
-                                                recentPlaylist.add(sx);
-                                            }
-                                            if (mSongId != null) {
-                                                Log.e("er", "null");
-                                                for (Song song : recentPlaylist) {
-                                                    if (song.getSongId().equals(mSongId)) {
-                                                        recentSong = song;
-                                                        break;
-                                                    }
+                                    public void onSuccess(QuerySnapshot querySnapshot) {
+                                        List<DocumentSnapshot> tmpDocuments = querySnapshot.getDocuments();
+                                        for (DocumentSnapshot abc : tmpDocuments) {
+                                            Song sx = abc.toObject(Song.class);
+                                            recentPlaylist.add(sx);
+                                        }
+                                        if (mSongId != null) {
+                                            Log.e("er", "null");
+                                            for (Song song : recentPlaylist) {
+                                                if (song.getSongId().equals(mSongId)) {
+                                                    recentSong = song;
+                                                    break;
                                                 }
-                                                setInformation(recentSong);
-                                                startMyService(recentPlaylist, recentSong);
-                                                isServiceRunning = true;
-
-                                            } else {
-                                                recentSong = recentPlaylist.get(0);
-                                                setInformation(recentSong);
-                                                startMyService(recentPlaylist, recentSong);
-                                                isServiceRunning = true;
                                             }
+                                            setInformation(recentSong);
+                                            startMyService(recentPlaylist, recentSong);
+                                            isServiceRunning = true;
+
+                                        } else {
+                                            recentSong = recentPlaylist.get(0);
+                                            setInformation(recentSong);
+                                            startMyService(recentPlaylist, recentSong);
+                                            isServiceRunning = true;
                                         }
                                     }
                                 });
