@@ -290,7 +290,7 @@ public class SongService extends Service {
 
         if(mediaPlayer != null) {
             mediaPlayer.release();
-            mediaPlayer = null;
+            mediaPlayer = null; 
         }
     }
 
