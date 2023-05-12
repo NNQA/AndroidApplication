@@ -58,10 +58,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.mlkit.nl.languageid.IdentifiedLanguage;
+import com.google.mlkit.nl.languageid.LanguageIdentification;
+import com.google.mlkit.nl.languageid.LanguageIdentifier;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import hcmute.edu.vn.spotifyclone.dataAccess.Playlist_songDAO;
 import hcmute.edu.vn.spotifyclone.model.Playlist;
@@ -72,7 +76,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
 
     //  Component
     MaterialButton btnPlay, btnMore, btnNext, btnPrev, btnMinimize;
-    TextView songTitle, songDescription, songTime;
+    TextView songTitle, songDescription, songTime, recentLanguage, tvLyric;
     ShapeableImageView songImg;
     Slider slider;
     //    dialog component
@@ -82,6 +86,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
     Dialog dialog;
 
     TextView lyric;
+    LanguageIdentifier languageIdentifier;
 
     //    Firebase component
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -157,11 +162,14 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
         btnNext = findViewById(R.id.btnNext);
         btnPrev = findViewById(R.id.btnPrevious);
         btnMinimize = findViewById(R.id.btnMinimize);
+        recentLanguage = findViewById(R.id.recentLanguage);
         songTitle = findViewById(R.id.songTitle);
         songDescription = findViewById(R.id.songDescription);
         songTime = findViewById(R.id.songTime);
         songImg = findViewById(R.id.songImage);
         slider = findViewById(R.id.songVolume);
+
+        languageIdentifier = LanguageIdentification.getClient();;
 
         gestureDetector = new GestureDetector(getApplicationContext(),this);
         lyric = findViewById(R.id.lyric);
@@ -500,6 +508,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
         String imgUrl = song.getImage();
         Glide.with(getApplicationContext()).load(imgUrl).into(songImg);
         setStatusButtonPlay();
+        setThisLanguage();
     }
 
     public void setStatusButtonPlay() {
@@ -736,5 +745,34 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             lyric.setLayoutParams(params);
         }
         return true;
+    }
+
+    public void setThisLanguage(){
+        String txt = recentSong.getLyric();
+
+        lyric.setText(txt);
+
+        txt.replaceAll("\n", " ");
+
+        languageIdentifier.identifyLanguage(txt)
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String s) {
+                        if (s.equals("und")){
+                            recentLanguage.setText("Language: Undefined");
+                        } else {
+                            Locale locale = new Locale(s);
+                            String languageName = locale.getDisplayLanguage(locale);
+
+                            recentLanguage.setText("Language: " + languageName);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        recentLanguage.setText("Language: Error!");
+                    }
+                });
     }
 }

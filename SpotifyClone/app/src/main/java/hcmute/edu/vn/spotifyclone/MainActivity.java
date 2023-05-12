@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-        String[] a = new String[0];
-        a[0] = "123";
+//        String[] a = new String[0];
+//        a[0] = "123";
 //        Broadcast
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(broadcastReceiver, new IntentFilter("send_action_to_act"));
