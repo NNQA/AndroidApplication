@@ -45,31 +45,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:includeFontPadding="false"
         android:gravity="right"
+        android:includeFontPadding="false"
         android:paddingRight="7dp"
         android:text="0:00 / 0:00"
         android:textColor="#ffffff"
         android:textSize="19dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.805" />
+        app:layout_constraintTop_toBottomOf="@+id/songVolume" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/songImage"
         android:layout_width="350dp"
         android:layout_height="350dp"
+        android:layout_marginTop="32dp"
         android:scaleType="centerCrop"
         android:src="@drawable/darkside"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.422"
+
+        app:layout_constraintTop_toBottomOf="@+id/songDescription"
         app:shapeAppearanceOverlay="@style/roundedImageView" />
 
     <com.google.android.material.slider.Slider
@@ -80,12 +78,10 @@
         android:valueFrom="0.0f"
         android:valueTo="101.0f"
         app:labelVisibilityMode="selected"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778"
+        app:layout_constraintTop_toBottomOf="@+id/songImage"
         app:thumbColor="#ffffff"
         app:trackColor="#b3b3b3" />
 
@@ -99,12 +95,10 @@
         app:iconGravity="end"
         app:iconSize="65dp"
         app:iconTint="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.949" />
+        app:layout_constraintTop_toBottomOf="@+id/songTime" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPrevious"
@@ -116,12 +110,10 @@
         app:iconGravity="start"
         app:iconSize="50dp"
         app:iconTint="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.936" />
+        app:layout_constraintTop_toBottomOf="@+id/songTime" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnNext"
@@ -133,12 +125,10 @@
         app:iconGravity="start"
         app:iconSize="50dp"
         app:iconTint="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.936" />
+        app:layout_constraintTop_toBottomOf="@+id/songTime" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMinimize"
@@ -173,5 +163,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.091" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/btnPlay"
+
+        android:paddingHorizontal="15dp"
+        android:paddingTop="0dp"
+        >
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lyric"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Language:"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/lyric"
+            android:layout_width="match_parent"
+            android:layout_height="115dp"
+
+            android:layout_marginTop="20dp"
+            android:text=" Nguyen dep giaiqweqweqweqweqweqweqweqweqweqwe \n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai\n Nguyen dep giai"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            tools:layout_editor_absoluteX="15dp"
+            android:background="@drawable/rounded_lyric"
+            android:textColor="@color/white"
+            android:scrollbars="vertical"
+            android:textSize="20sp"
+            android:padding="10dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,13 +21,19 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -62,7 +68,7 @@ import hcmute.edu.vn.spotifyclone.model.Playlist;
 import hcmute.edu.vn.spotifyclone.model.Song;
 import hcmute.edu.vn.spotifyclone.service.SongService;
 
-public class MusicPlay_Activity extends AppCompatActivity {
+public class MusicPlay_Activity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
     //  Component
     MaterialButton btnPlay, btnMore, btnNext, btnPrev, btnMinimize;
@@ -74,6 +80,8 @@ public class MusicPlay_Activity extends AppCompatActivity {
     TextInputLayout textInputLayout;
     AutoCompleteTextView autoCompleteTextView;
     Dialog dialog;
+
+    TextView lyric;
 
     //    Firebase component
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -90,6 +98,9 @@ public class MusicPlay_Activity extends AppCompatActivity {
     public int totalDuration = 1;
     public int currentProgress = 1;
     private int REQUEST_CODE_WRITE_EXTERNAL_STORAGE = 23;
+    private GestureDetector gestureDetector;
+    private int originalLyricHeight, originalHeight;
+
 
     //
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -152,7 +163,14 @@ public class MusicPlay_Activity extends AppCompatActivity {
         songImg = findViewById(R.id.songImage);
         slider = findViewById(R.id.songVolume);
 
+        gestureDetector = new GestureDetector(getApplicationContext(),this);
+        lyric = findViewById(R.id.lyric);
 
+        lyric.setMovementMethod(new ScrollingMovementMethod());
+
+
+        originalLyricHeight = lyric.getLayoutParams().height;
+        originalHeight = songImg.getLayoutParams().height;
         PopupMenu popupMenu = new PopupMenu(this, btnMore);
         popupMenu.getMenuInflater().inflate(R.menu.music_play_menu, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -247,6 +265,7 @@ public class MusicPlay_Activity extends AppCompatActivity {
                 btnPrevClick();
             }
         });
+
 
     }
 
@@ -621,5 +640,101 @@ public class MusicPlay_Activity extends AppCompatActivity {
                 }
             });
         }
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Pass the touch event to the GestureDetector to detect swipe gestures
+        gestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(@NonNull MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(@NonNull MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(@NonNull MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(@NonNull MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(@NonNull MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+        float distanceY = e1.getY() - e2.getY();
+
+        // If the distance is greater than a threshold, update the layout parameters of the ImageView
+        if (Math.abs(distanceY) > 200) {
+            ViewGroup.LayoutParams params = lyric.getLayoutParams();
+            AlphaAnimation animation = new AlphaAnimation(1.0f, 0.0f);
+            animation.setDuration(200);
+            System.out.println(params.height);
+            if (distanceY > 0) {
+                // Swipe up - change the height of the ImageView to 0
+
+                params.height = originalLyricHeight + 1000;
+                // Set a listener to hide the ImageView after the animation finishes
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        songImg.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                // Start the animation on the ImageView
+
+                songImg.startAnimation(animation);
+
+            } else {
+                params.height = originalLyricHeight;
+                // Swipe down - reset the height of the ImageView to its original value
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        songImg.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {}
+                });
+
+                // Start the animation on the ImageView
+
+                songImg.startAnimation(animation);
+
+            }
+
+            lyric.setLayoutParams(params);
+        }
+        return true;
     }
 }
