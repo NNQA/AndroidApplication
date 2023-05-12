@@ -749,11 +749,9 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
 
     public void setThisLanguage(){
         String txt = recentSong.getLyric();
-
+        txt = txt.replaceAll("&n", "\n");
         lyric.setText(txt);
-
-        txt.replaceAll("\n", " ");
-
+        txt = txt.replaceAll("\n", " ");
         languageIdentifier.identifyLanguage(txt)
                 .addOnSuccessListener(new OnSuccessListener<String>() {
                     @Override
