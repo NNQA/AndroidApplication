@@ -15,41 +15,22 @@ public class Song implements Serializable, Parcelable {
     public String source;
     public String uploader;
 
+    public String lyric;
 
-    public Song() {
-
-    }
-
-    public Song(String songId, String songName, String singer, String image, String source, String uploader) {
+    public Song(String songId, String songName, String singer, String image, String source, String uploader, String lyric) {
         this.songId = songId;
         this.songName = songName;
         this.singer = singer;
         this.image = image;
         this.source = source;
         this.uploader = uploader;
+        this.lyric = lyric;
     }
 
-    protected Song(Parcel in) {
-        songId = in.readString();
-        songName = in.readString();
-        singer = in.readString();
-        image = in.readString();
-        source = in.readString();
-        uploader = in.readString();
+    public Song() {
+
     }
-
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
-
+    
     public String getSongId() {
         return songId;
     }
@@ -98,10 +79,42 @@ public class Song implements Serializable, Parcelable {
         this.uploader = uploader;
     }
 
+    public String getLyric() {
+        return lyric;
+    }
+
+    public void setLyric(String lyric) {
+        this.lyric = lyric;
+    }
+
+    //
+    protected Song(Parcel in) {
+        songId = in.readString();
+        songName = in.readString();
+        singer = in.readString();
+        image = in.readString();
+        source = in.readString();
+        uploader = in.readString();
+        lyric = in.readString();
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
+
     @Override
     public int describeContents() {
         return 0;
     }
+
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
@@ -111,5 +124,6 @@ public class Song implements Serializable, Parcelable {
         parcel.writeString(image);
         parcel.writeString(source);
         parcel.writeString(uploader);
+        parcel.writeString(lyric);
     }
 }

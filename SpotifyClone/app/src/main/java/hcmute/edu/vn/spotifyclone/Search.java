@@ -146,7 +146,8 @@ public class Search extends Fragment {
                                                             documentSnapshot.getString("singer"),
                                                             documentSnapshot.getString("image"),
                                                             documentSnapshot.getString("source"),
-                                                            documentSnapshot.getString("uploader"));
+                                                            documentSnapshot.getString("uploader"),
+                                                            documentSnapshot.getString("lyric"));
                                             list.add(songs);
                                         }
                                     }

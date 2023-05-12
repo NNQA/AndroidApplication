@@ -275,6 +275,7 @@ public class SongService extends Service {
                 .build();
 
         startForeground(1, notification);
+        Song abc = new Song();
     }
 
     private PendingIntent getPendingIntent(Context context, int action) {
