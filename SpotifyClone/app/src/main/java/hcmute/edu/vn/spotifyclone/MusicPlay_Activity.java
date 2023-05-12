@@ -39,6 +39,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -76,17 +77,19 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
 
     //  Component
     MaterialButton btnPlay, btnMore, btnNext, btnPrev, btnMinimize;
-    TextView songTitle, songDescription, songTime, recentLanguage, tvLyric;
+    TextView songTitle, songDescription, songTime, recentLanguage;
     ShapeableImageView songImg;
     Slider slider;
     //    dialog component
     MaterialButton cancelBtnDialog, okBtnDialog;
     TextInputLayout textInputLayout;
-    AutoCompleteTextView autoCompleteTextView;
+    AutoCompleteTextView autoCompleteTextView, tvItemLang;
     Dialog dialog;
 
     TextView lyric;
     LanguageIdentifier languageIdentifier;
+    List<String> langCodeList = new ArrayList<>();
+    List<String> langNameList = new ArrayList<>();
 
     //    Firebase component
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -167,6 +170,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
         songDescription = findViewById(R.id.songDescription);
         songTime = findViewById(R.id.songTime);
         songImg = findViewById(R.id.songImage);
+        tvItemLang = findViewById(R.id.drop_item_lang);
         slider = findViewById(R.id.songVolume);
 
         languageIdentifier = LanguageIdentification.getClient();;
@@ -274,6 +278,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             }
         });
 
+        setLanguageMenuEventClick();
 
     }
 
@@ -745,6 +750,34 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             lyric.setLayoutParams(params);
         }
         return true;
+    }
+
+    public void initLanguageList(){
+        Locale[] availableLocales = Locale.getAvailableLocales();
+
+        for (Locale locale : availableLocales) {
+            String languageCode = locale.getLanguage();
+            String nativeName = locale.getDisplayLanguage();
+
+            langCodeList.add(languageCode);
+            langNameList.add(nativeName);
+        }
+    }
+
+    public void setLanguageMenuEventClick(){
+        initLanguageList();
+
+        ArrayAdapter<String> itemAdapter =
+                new ArrayAdapter<>(MusicPlay_Activity.this, R.layout.item_list, langNameList);
+
+        tvItemLang.setAdapter(itemAdapter);
+
+        tvItemLang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), "Lang: "+langNameList.get(i).toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void setThisLanguage(){
