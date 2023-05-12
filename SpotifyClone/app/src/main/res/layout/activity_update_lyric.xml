@@ -19,7 +19,7 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="Upload Song"
+                app:title="Upload Lyric"
                 app:titleTextColor="@color/white"
                 android:background="@color/black"
                 app:navigationIcon="@drawable/arrow_back_24px" />
@@ -48,6 +48,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/songname_edittext"
+                android:paddingHorizontal="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,7 +67,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_lyric"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="600dp"
                     android:background="@drawable/rounded_lyric"
                     android:lines="@integer/material_motion_duration_long_2"
                     android:inputType="textMultiLine"

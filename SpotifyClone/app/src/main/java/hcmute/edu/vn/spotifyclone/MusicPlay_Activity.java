@@ -695,7 +695,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             if (distanceY > 0) {
                 // Swipe up - change the height of the ImageView to 0
 
-                params.height = originalLyricHeight + 1000;
+                params.height = originalLyricHeight + 800;
                 // Set a listener to hide the ImageView after the animation finishes
                 animation.setAnimationListener(new Animation.AnimationListener() {
                     @Override

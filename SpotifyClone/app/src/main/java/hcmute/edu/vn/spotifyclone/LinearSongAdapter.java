@@ -63,13 +63,7 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         holder.song_image.setImageBitmap(bitmap);
         holder.song_name.setText(song.getSongName());
-//        holder.song_item_view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                navigateSongScreen(song.getSongId());
-//
-//            }
-//        });
+
         holder.song_singer.setText(song.getSinger());
         holder.download_song_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +83,12 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
             }
         });
 
+        holder.upload_Lyric_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateUploadLyricScreen(song.getSongId(),song.getSongName(),song.getLyric());
+            }
+        });
     }
 
     @NonNull
@@ -106,6 +106,7 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
         public LinearLayout song_item_view;
         public ImageView download_song_btn;
         public ImageView play_btn;
+        public ImageView upload_Lyric_btn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -114,6 +115,7 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
             song_singer = itemView.findViewById(R.id.ln_song_singer);
             download_song_btn = itemView.findViewById(R.id.download_song_btn);
             play_btn = itemView.findViewById(R.id.play_btn);
+            upload_Lyric_btn = itemView.findViewById(R.id.upload_song_lyric_btn);
         }
     }
 
@@ -147,6 +149,15 @@ public class LinearSongAdapter extends FirestoreRecyclerAdapter<Song, LinearSong
     void navigateSongScreen(String songId) {
         Intent intent = new Intent(context,MusicPlay_Activity.class);
         intent.putExtra("sondId",songId);
+
+        context.startActivity(intent);
+    }
+
+    void navigateUploadLyricScreen(String songId,String songName,String lyric) {
+        Intent intent = new Intent(context,ActivityUpdateLyric.class);
+        intent.putExtra("sondId",songId);
+        intent.putExtra("songName",songName);
+        intent.putExtra("lyric",lyric);
         context.startActivity(intent);
     }
     public void openNoticeDialog(String msg) {
