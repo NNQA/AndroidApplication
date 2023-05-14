@@ -764,15 +764,26 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
     }
 
     public void initLanguageList(){
-        Locale[] availableLocales = Locale.getAvailableLocales();
+//        Locale[] availableLocales = Locale.getAvailableLocales();
+//
+//        for (Locale locale : availableLocales) {
+//            String languageCode = locale.getLanguage();
+//            String nativeName = locale.getDisplayLanguage();
+//
+//            langCodeList.add(languageCode);
+//            langNameList.add(nativeName);
+//        }
+        langCodeList.add("vi");
+        langNameList.add("Việt Nam");
 
-        for (Locale locale : availableLocales) {
-            String languageCode = locale.getLanguage();
-            String nativeName = locale.getDisplayLanguage();
+        langCodeList.add("en");
+        langNameList.add("English");
 
-            langCodeList.add(languageCode);
-            langNameList.add(nativeName);
-        }
+        langCodeList.add("zh");
+        langNameList.add("中文");
+
+        langCodeList.add("ja");
+        langNameList.add("日本語");
     }
 
     public void setLanguageMenuEventClick(){
