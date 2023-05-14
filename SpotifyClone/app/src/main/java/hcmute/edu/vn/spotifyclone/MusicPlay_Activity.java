@@ -798,6 +798,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getApplicationContext(), "Lang: "+langNameList.get(i).toString(), Toast.LENGTH_LONG).show();
+                openProgressDialog();
                 Translate(langCodeList.get(i).toString(),langNameList.get(i));
             }
         });
@@ -817,6 +818,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
                                 String join = String.join("\n", animals);
                                 lyric.setText(join.toString());
                                 recentLanguage.setText("Language: " + b);
+                                dialog.dismiss();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
