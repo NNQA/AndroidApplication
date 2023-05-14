@@ -798,11 +798,11 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getApplicationContext(), "Lang: "+langNameList.get(i).toString(), Toast.LENGTH_LONG).show();
-                Translate(langCodeList.get(i).toString());
+                Translate(langCodeList.get(i).toString(),langNameList.get(i));
             }
         });
     }
-    private void startTranslate() {
+    private void startTranslate(String b) {
         List<String> animals = new ArrayList<>();
         int j = 0;
         for (int i = 0; i < lines.length; i++) {
@@ -816,6 +816,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
                             if(finalJ == lines.length - 1) {
                                 String join = String.join("\n", animals);
                                 lyric.setText(join.toString());
+                                recentLanguage.setText("Language: " + b);
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -826,7 +827,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
                     });
         }
     }
-    private void Translate(String a) {
+    private void Translate(String a,String b) {
         Log.d("Asd", "Translate: " + localName + " " + a);
         TranslatorOptions option =
                 new TranslatorOptions.Builder()
@@ -836,7 +837,7 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
         tranlator =
                 Translation.getClient(option);
         downloadModel();
-        startTranslate();
+        startTranslate(b);
     }
     private void downloadModel() {
         DownloadConditions downloadConditions = new DownloadConditions.Builder()

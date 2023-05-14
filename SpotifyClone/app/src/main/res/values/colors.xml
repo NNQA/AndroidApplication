@@ -26,7 +26,10 @@
     <color name="menu_item">#b2adab</color>
     <color name="sub_text_color">#a4a4a4</color>
     <color name="main_color">#1bce5c</color>
-
+    <color name="my_background_color">#222222</color>
+    <color name="my_text_color">#FFFFFF</color>
+    <color name="my_hint_color">#AAAAAA</color>
+    <color name="my_popup_background_color">#333333</color>
 
 
 
