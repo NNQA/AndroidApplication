@@ -41,6 +41,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.mlkit.nl.translate.TranslateLanguage;
+import com.google.mlkit.nl.translate.Translation;
+import com.google.mlkit.nl.translate.Translator;
+import com.google.mlkit.nl.translate.TranslatorOptions;
+
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -59,6 +64,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.languageid.IdentifiedLanguage;
 import com.google.mlkit.nl.languageid.LanguageIdentification;
 import com.google.mlkit.nl.languageid.LanguageIdentifier;
@@ -76,6 +82,11 @@ import hcmute.edu.vn.spotifyclone.service.SongService;
 public class MusicPlay_Activity extends AppCompatActivity implements GestureDetector.OnGestureListener{
 
     //  Component
+    Translator     tranlator;
+    String[]  lines;
+    String languageName;
+    String localName;
+    String code;
     MaterialButton btnPlay, btnMore, btnNext, btnPrev, btnMinimize;
     TextView songTitle, songDescription, songTime, recentLanguage;
     ShapeableImageView songImg;
@@ -776,13 +787,69 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(getApplicationContext(), "Lang: "+langNameList.get(i).toString(), Toast.LENGTH_LONG).show();
+                Translate(langCodeList.get(i).toString());
             }
         });
     }
+    private void startTranslate() {
+        List<String> animals = new ArrayList<>();
+        int j = 0;
+        for (int i = 0; i < lines.length; i++) {
+            j = i;
+            int finalJ = j;
+            tranlator.translate(lines[i])
+                    .addOnSuccessListener(new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            animals.add(s);
+                            if(finalJ == lines.length - 1) {
+                                String join = String.join("\n", animals);
+                                lyric.setText(join.toString());
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("asdsad", "Translate: " + e.toString());
+                        }
+                    });
+        }
+    }
+    private void Translate(String a) {
+        Log.d("Asd", "Translate: " + localName + " " + a);
+        TranslatorOptions option =
+                new TranslatorOptions.Builder()
+                        .setSourceLanguage(localName)
+                        .setTargetLanguage(a)
+                        .build();
+        tranlator =
+                Translation.getClient(option);
+        downloadModel();
+        startTranslate();
+    }
+    private void downloadModel() {
+        DownloadConditions downloadConditions = new DownloadConditions.Builder()
+                .requireWifi()
+                .build();
 
+        tranlator.downloadModelIfNeeded(downloadConditions)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+//                        Toast.makeText(MusicPlay_Activity.this, "success", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Asd", "onFailure: " + e.toString());
+                    }
+                });
+    }
     public void setThisLanguage(){
         String txt = recentSong.getLyric();
         txt = txt.replaceAll("&n", "\n");
+        lines = txt.split("\n");
         lyric.setText(txt);
         txt = txt.replaceAll("\n", " ");
         languageIdentifier.identifyLanguage(txt)
@@ -793,8 +860,8 @@ public class MusicPlay_Activity extends AppCompatActivity implements GestureDete
                             recentLanguage.setText("Language: Undefined");
                         } else {
                             Locale locale = new Locale(s);
-                            String languageName = locale.getDisplayLanguage(locale);
-
+                            localName = s;
+                            languageName = locale.getDisplayLanguage(locale);
                             recentLanguage.setText("Language: " + languageName);
                         }
                     }
