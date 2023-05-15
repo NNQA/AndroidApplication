@@ -1,6 +1,8 @@
 package hcmute.edu.vn.spotifyclone.dataAccess;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import hcmute.edu.vn.spotifyclone.ActivityUpdateLyric;
 import hcmute.edu.vn.spotifyclone.model.Song;
 
 
@@ -125,11 +128,14 @@ public class SongDAO {
                 });
     }
 
-    public void updateOnlyField(String documentId,String fieldName,String data){
+    public void updateOnlyField(String documentId, String fieldName, String data, Context context){
         database.collection("songs").document(documentId).update(fieldName,data).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d("Update", "Update document field success");
+
+                Toast.makeText(context,  "Update Succeed", Toast.LENGTH_LONG).show();
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

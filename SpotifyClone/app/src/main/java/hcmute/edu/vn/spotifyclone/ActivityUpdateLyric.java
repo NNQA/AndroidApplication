@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,7 +48,7 @@ public class ActivityUpdateLyric extends AppCompatActivity {
                 Bundle bundle = getIntent().getExtras();
                 String a =lyric.getText().toString().replaceAll("\n", "&n");
                 String songId = bundle.getString("sondId");
-                songDAO.updateOnlyField(songId,"lyric",a);
+                songDAO.updateOnlyField(songId,"lyric",a, getApplicationContext());
                 onBackPressed();
             }
         });

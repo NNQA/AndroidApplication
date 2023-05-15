@@ -174,10 +174,10 @@ public class UploadMusic extends AppCompatActivity {
                             String fileUrl = uri.toString();
                             String songId = song.getSongId();
                             if(type == "image") {
-                                songDAO.updateOnlyField(songId,"image",fileUrl);
+                                songDAO.updateOnlyField(songId,"image",fileUrl, getApplicationContext());
                             }
                             else {
-                                songDAO.updateOnlyField(songId, "source", fileUrl);
+                                songDAO.updateOnlyField(songId, "source", fileUrl, getApplicationContext());
                                 Toast.makeText(getApplicationContext(),"Share Success",Toast.LENGTH_LONG).show();
                                 onBackPressed();
                             }
